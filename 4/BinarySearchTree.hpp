@@ -18,8 +18,8 @@ public:
 	BinarySearchTree(BinarySearchTree<T>&& scr);
 
 	//
-	BinarySearchTree <T>& operator= (const BinarySearchTree <T>& src) = delete;
-	BinarySearchTree <T>& operator= (BinarySearchTree <T>&& src);
+	BinarySearchTree<T>& operator= (const BinarySearchTree <T>& src) = delete;
+	BinarySearchTree<T>& operator= (BinarySearchTree <T>&& src);
 
 	// Деструктор освобождает память, занятую узлами дерева
 	virtual ~BinarySearchTree();
@@ -107,7 +107,7 @@ private:
 
 	// .........................................................................
 	template <class T>
-	BinarySearchTree <T>& operator= (BinarySearchTree <T>&& src)
+	BinarySearchTree<T>& BinarySearchTree<T>::operator= (BinarySearchTree <T>&& src)
 	{
 		// ???
 	}
@@ -237,7 +237,7 @@ private:
 	
 	// 8.1 Инфиксный обход дерева (рекурсивный) 
 	template <class T>
-	void BinarySearchTree<T>::inorderWalk(Node<T>* node) const
+	void BinarySearchTree<T>::inorderWalk() const
 	{
 		return inorderWalk(this->root_);
 	}
