@@ -13,44 +13,44 @@ public:
 
 	// Конструкторы 
 	// "по умолчанию" создает пустое дерево
-	BinarySearchTree();
+	BinarySearchTree(); //TODO: конструктор по умолчанию.
 	BinarySearchTree(const BinarySearchTree<T> & scr) = delete;
-	BinarySearchTree(BinarySearchTree<T>&& scr);
+	BinarySearchTree(BinarySearchTree<T>&& scr); //TODO: конструктор перемещения.
 
-	//
+	// Перегрузка оператора =.
 	BinarySearchTree<T>& operator= (const BinarySearchTree <T>& src) = delete;
-	BinarySearchTree<T>& operator= (BinarySearchTree <T>&& src);
+	BinarySearchTree<T>& operator= (BinarySearchTree <T>&& src); //TODO: оператор перемещающего присваивания.
 
 	// Деструктор освобождает память, занятую узлами дерева
-	virtual ~BinarySearchTree();
+	virtual ~BinarySearchTree(); //TODO: деструктор.
 		
-	// 1.1 Функция поиска по ключу в бинарном дереве поиска
+	// TODO:1.1 Функция поиска по ключу в бинарном дереве поиска
 	bool iterativeSearch(const T& key) const;
 	
-	// 2 Вставка нового элемента в дерево:
+	// TODO:2 Вставка нового элемента в дерево:
     // true,если элемент добавлен; false, если элемент уже был
 	bool insert(const T& key);
 	
-	// 3.1 Удаление элемента из дерева, не нарушающее порядка элементов
+	// TODO:3.1 Удаление элемента из дерева, не нарушающее порядка элементов
 	// true,если элемент удален; false, если элемента не было
 	bool deleteKey(const T& key);
 	
-	// 4.1 Печать строкового изображения дерева в выходной поток out
+	// TODO:4.1 Печать строкового изображения дерева в выходной поток out
 	void print(std::ostream& out) const;
 	
-	// 5.1 Определение количества узлов дерева
+	// TODO:5.1 Определение количества узлов дерева
 	int getCount() const;
 	
-	// 6.1 Определение высоты дерева
+	// TODO:6.1 Определение высоты дерева
 	int getHeight() const;
 	
-	// 7 Инфиксный обход дерева (итеративный) 
+	// TODO:7 Инфиксный обход дерева (итеративный)
 	void iterativeInorderWalk () const;
 
-	// 8.1 Инфиксный обход дерева (рекурсивный) 
+	// TODO:8.1 Инфиксный обход дерева (рекурсивный)
 	void inorderWalk() const;
 
-	// 9 Сравнение деревьев: true, если все узлы деревьев одинаковые
+	// TODO:9 Сравнение деревьев: true, если все узлы деревьев одинаковые
 	bool operator== (const BinarySearchTree <T>& src);	
 
 private:
@@ -71,34 +71,37 @@ private:
 	// Дерево реализовано в виде указателя на корневой узел.
 	Node<T>* root_;
 
+	// TODO:Метод свап.
 	void swap(BinarySearchTree <T>& left, BinarySearchTree <T>& right);
 
-	// Рекурсивная функция для освобождения памяти
+	// TODO:Рекурсивная функция для освобождения памяти.
 	void deleteSubtree(Node<T>* node);
 
-	// 1.2 Функция поиска адреса узла по ключу в бинарном дереве поиска
+	// TODO:1.2 Функция поиска адреса узла по ключу в бинарном дереве поиска
 	Node<T>* iterativeSearchNode(const T& key) const;
 	
-	// 4.2 Рекурсивная функция для вывода изображения дерева в выходной поток
+	// TODO:4.2 Рекурсивная функция для вывода изображения дерева в выходной поток
 	void printNode(std::ostream& out, Node<T>* root) const;
 	
-	// 5.2 Рекурсивная функция определения количества узлов дерева
+	// TODO:5.2 Рекурсивная функция определения количества узлов дерева
 	int getCountSubTree(const Node<T>* node) const;
 
-	// 6.2 Рекурсивная функция определения высоты дерева
+	// TODO:6.2 Рекурсивная функция определения высоты дерева
 	int getHeightSubTree(Node<T>* node) const;
 	
-	// 8.2 Рекурсивная функция для организации обхода узлов дерева.
+	// TODO:8.2 Рекурсивная функция для организации обхода узлов дерева.
 	void inorderWalk(Node<T>* node) const;
 
 }; // конец шаблона класса TreeBinarySearchTree
 
 
 
-    // Конструктор "по умолчанию" создает пустое дерево
+  // TODO:Конструктор "по умолчанию" создает пустое дерево
 	template <class T>
 	BinarySearchTree<T>::BinarySearchTree(): root_(nullptr)
 	{}
+
+	// TODO:Конструктор перемещения.
 	template <class T>
 	BinarySearchTree<T>::BinarySearchTree(BinarySearchTree<T>&& scr)
 	{
@@ -106,6 +109,8 @@ private:
 	}
 
 	// .........................................................................
+
+	// TODO: Перегрузка оператора =.
 	template <class T>
 	BinarySearchTree<T>& BinarySearchTree<T>::operator= (BinarySearchTree <T>&& src)
 	{
@@ -113,15 +118,15 @@ private:
 	}
 
 	// .........................................................................
-	// Деструктор освобождает память, занятую узлами дерева
 
+	// TODO:Деструктор освобождает память, занятую узлами дерева
 	template <class T>
 	BinarySearchTree<T>::~BinarySearchTree()
 	{
 		deleteSubtree(root_);
 	}
 
-	// Рекурсивная функция для освобождения памяти
+	// TODO:Рекурсивная функция для освобождения памяти
 	template <class T>
 	void BinarySearchTree<T>::deleteSubtree(Node<T>* node)
 	{
@@ -129,6 +134,8 @@ private:
 	}
 
 	// ......................................................................... 
+
+	// TODO: метод свап.
 	template <class T>
 	void BinarySearchTree<T>::swap(BinarySearchTree <T>& left, BinarySearchTree <T>& right)
 	{
@@ -136,13 +143,14 @@ private:
 	}
 	// .........................................................................
 
-	// 1.1 Функция поиска по ключу в бинарном дереве поиска
+	// TODO:1.1 Функция поиска по ключу в бинарном дереве поиска
 	template <class T>
 	bool BinarySearchTree<T>::iterativeSearch(const T& key)  const
 	{
 		return (iterativeSearchNode(key) != nullptr);
 	}
-	// 1.2 Функция поиска адреса узла по ключу в бинарном дереве поиска
+
+	// TODO:1.2 Функция поиска адреса узла по ключу в бинарном дереве поиска
 	template <class T>
 	BinarySearchTree<T>::Node<T>* BinarySearchTree<T>::iterativeSearchNode(const T& key) const
 	{
@@ -151,9 +159,8 @@ private:
 	}
 	// .........................................................................
 	
-	// 2. Вставка нового элемента в дерево:
+	// TODO: 2. Вставка нового элемента в дерево:
 	// true,если элемент добавлен; false, если элемент уже был
-
 	template <class T>
 	bool BinarySearchTree<T>::insert(const T& key)
 	{
@@ -162,7 +169,7 @@ private:
 	}
 	// .........................................................................
 
-	// 3. Удаление элемента из дерева, не нарушающее порядка элементов
+	// TODO: 3. Удаление элемента из дерева, не нарушающее порядка элементов
 	template <class T>
 	bool BinarySearchTree<T>::deleteKey(const T& key)
 	{
@@ -170,14 +177,15 @@ private:
 	}
 	// .........................................................................
 
-	// 4.1 Печать строкового изображения дерева в выходной поток out
+	// TODO:4.1 Печать строкового изображения дерева в выходной поток out
 	template <class T>
 	void BinarySearchTree<T>::print(std::ostream& out) const
 	{
 		printNode(out, root_);
 		out << std::endl;
 	}
-	// 4.2 Рекурсивная функция для вывода изображения дерева в выходной поток
+
+	// TODO: 4.2 Рекурсивная функция для вывода изображения дерева в выходной поток
 	template <class T>
 	void BinarySearchTree<T>::printNode(std::ostream& out, Node<T>* root) const
 	{
@@ -194,13 +202,14 @@ private:
 	}
 	// .........................................................................
 
-	//5.1 Определение количества узлов дерева
+	// TODO:5.1 Определение количества узлов дерева
 	template <class T>
 	int BinarySearchTree<T>::getCount() const
 	{
 		return getCountSubTree(this->root_);
 	}
-	// 5.2 Рекурсивная функция определения количества узлов дерева
+
+	// TODO: 5.2 Рекурсивная функция определения количества узлов дерева
 	template <class T>
 	int BinarySearchTree<T>::getCountSubTree(const Node<T>* node) const
 	{
@@ -211,23 +220,23 @@ private:
 	}
 	// .........................................................................
 	
-	// 6.1 Определение высоты дерева
+	// TODO:6.1 Определение высоты дерева
 	template <class T>
 	int BinarySearchTree<T>::getHeight() const
 	{
 		return getHeightSubTree(this->root_);
 	}
-	// 6.2 Рекурсивная функция определения высоты дерева
+
+	// TODO:6.2 Рекурсивная функция определения высоты дерева
 	template <class T>
 	int BinarySearchTree<T>::getHeightSubTree(Node<T>* node) const
 	{
 		// ??? 
 		return 0; // ??? заменить при реализации
 	}
-	
 	// .........................................................................
 
-	// 7. Инфиксный обход дерева (итеративный) 
+	// TODO: 7. Инфиксный обход дерева (итеративный)
 	template <class T>
 	void BinarySearchTree<T>::iterativeInorderWalk() const
 	{
@@ -235,20 +244,21 @@ private:
 	}
 	// .........................................................................
 	
-	// 8.1 Инфиксный обход дерева (рекурсивный) 
+	// TODO: 8.1 Инфиксный обход дерева (рекурсивный)
 	template <class T>
 	void BinarySearchTree<T>::inorderWalk() const
 	{
 		return inorderWalk(this->root_);
 	}
-	// 8.2 Рекурсивная функция для организации обхода узлов дерева.
+	// TODO: 8.2 Рекурсивная функция для организации обхода узлов дерева.
 	template <class T>
 	void BinarySearchTree<T>::inorderWalk(Node<T>* node) const
 	{
 		// ??? 
 	}
 	// .........................................................................
-	// 9. Сравнение деревьев: true, если все узлы деревьев одинаковые
+
+	// TODO:9. Сравнение деревьев: true, если все узлы деревьев одинаковые
 	template <class T>
 	bool BinarySearchTree<T>::operator== (const BinarySearchTree <T>& src)
 	{
