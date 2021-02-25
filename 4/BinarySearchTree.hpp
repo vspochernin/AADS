@@ -2,6 +2,8 @@
 #define __BINARY_SEARCH_TREE_H
 
 #include <iostream>
+#include <stack> // Для итеративного обхода дерева.
+#include <vector> // Для перегрузки оператора ==.
 
 //
 // Определение шаблона класса BinarySearchTree
@@ -13,57 +15,57 @@ public:
 
 	// Конструкторы 
 	// "по умолчанию" создает пустое дерево
-	BinarySearchTree(); //TODO: конструктор по умолчанию.
-	BinarySearchTree(const BinarySearchTree<T> & scr) = delete;
-	BinarySearchTree(BinarySearchTree<T>&& scr); //TODO: конструктор перемещения.
+	BinarySearchTree(); // Конструктор по умолчанию.
+	BinarySearchTree(const BinarySearchTree<T> & src) = delete;
+	BinarySearchTree(BinarySearchTree<T>&& src); // Конструктор перемещения.
 
 	// Перегрузка оператора =.
 	BinarySearchTree<T>& operator= (const BinarySearchTree <T>& src) = delete;
-	BinarySearchTree<T>& operator= (BinarySearchTree <T>&& src); //TODO: оператор перемещающего присваивания.
+	BinarySearchTree<T>& operator= (BinarySearchTree <T>&& src);
 
 	// Деструктор освобождает память, занятую узлами дерева
-	virtual ~BinarySearchTree(); //TODO: деструктор.
+	virtual ~BinarySearchTree();
 		
-	// TODO:1.1 Функция поиска по ключу в бинарном дереве поиска
+	// 1.1 Функция поиска по ключу в бинарном дереве поиска
 	bool iterativeSearch(const T& key) const;
-	
-	// TODO:2 Вставка нового элемента в дерево:
-    // true,если элемент добавлен; false, если элемент уже был
+
+	// 2.1 Вставка нового элемента в дерево:
+  // true,если элемент добавлен; false, если элемент уже был
 	bool insert(const T& key);
 	
-	// TODO:3.1 Удаление элемента из дерева, не нарушающее порядка элементов
+	// Удаление элемента из дерева, не нарушающее порядка элементов
 	// true,если элемент удален; false, если элемента не было
 	bool deleteKey(const T& key);
 	
-	// TODO:4.1 Печать строкового изображения дерева в выходной поток out
+	// 4.1 Печать строкового изображения дерева в выходной поток out
 	void print(std::ostream& out) const;
 	
-	// TODO:5.1 Определение количества узлов дерева
+	// 5.1 Определение количества узлов дерева
 	int getCount() const;
 	
-	// TODO:6.1 Определение высоты дерева
+	// 6.1 Определение высоты дерева
 	int getHeight() const;
-	
-	// TODO:7 Инфиксный обход дерева (итеративный)
+
+	// 7 Инфиксный обход дерева (итеративный)
 	void iterativeInorderWalk () const;
 
-	// TODO:8.1 Инфиксный обход дерева (рекурсивный)
+	// 8.1 Инфиксный обход дерева (рекурсивный)
 	void inorderWalk() const;
 
-	// TODO:9 Сравнение деревьев: true, если все узлы деревьев одинаковые
+	// 9 Сравнение деревьев: true, если все узлы деревьев одинаковые
 	bool operator== (const BinarySearchTree <T>& src);	
 
 private:
 
 	// Описание структуры узла со ссылками на детей и родителя
-	template <class T>
+	template <class V>
 	struct Node {
-		T  key_;         // значение ключа, содержащееся в узле
-		Node<T>* left_;     // указатель на левое поддерево
-		Node<T>* right_;    // указатель на правое поддерево
-		Node<T>* p_;        // указатель на  родителя 
+		V  key_;         // значение ключа, содержащееся в узле
+		Node<V>* left_;     // указатель на левое поддерево
+		Node<V>* right_;    // указатель на правое поддерево
+		Node<V>* p_;        // указатель на  родителя
 						 
-		Node(T key, Node* left = nullptr, Node* right = nullptr, Node* p = nullptr) :
+		Node(V key, Node* left = nullptr, Node* right = nullptr, Node* p = nullptr) :
 			key_(key), left_(left), right_(right), p_(p)
 		{  }
 	};
@@ -71,113 +73,336 @@ private:
 	// Дерево реализовано в виде указателя на корневой узел.
 	Node<T>* root_;
 
-	// TODO:Метод свап.
+	// Метод свап.
 	void swap(BinarySearchTree <T>& left, BinarySearchTree <T>& right);
 
-	// TODO:Рекурсивная функция для освобождения памяти.
+	// Рекурсивная функция для освобождения памяти.
 	void deleteSubtree(Node<T>* node);
 
-	// TODO:1.2 Функция поиска адреса узла по ключу в бинарном дереве поиска
+	// 1.2 Функция поиска адреса узла по ключу в бинарном дереве поиска
 	Node<T>* iterativeSearchNode(const T& key) const;
-	
-	// TODO:4.2 Рекурсивная функция для вывода изображения дерева в выходной поток
+
+	// 4.2 Рекурсивная функция для вывода изображения дерева в выходной поток
 	void printNode(std::ostream& out, Node<T>* root) const;
 	
-	// TODO:5.2 Рекурсивная функция определения количества узлов дерева
+	// 5.2 Рекурсивная функция определения количества узлов дерева
 	int getCountSubTree(const Node<T>* node) const;
 
-	// TODO:6.2 Рекурсивная функция определения высоты дерева
+	// 6.2 Рекурсивная функция определения высоты дерева
 	int getHeightSubTree(Node<T>* node) const;
 	
-	// TODO:8.2 Рекурсивная функция для организации обхода узлов дерева.
+	// 8.2 Рекурсивная функция для организации обхода узлов дерева.
 	void inorderWalk(Node<T>* node) const;
 
 }; // конец шаблона класса TreeBinarySearchTree
 
 
 
-  // TODO:Конструктор "по умолчанию" создает пустое дерево
+  // Конструктор "по умолчанию" создает пустое дерево
 	template <class T>
 	BinarySearchTree<T>::BinarySearchTree(): root_(nullptr)
 	{}
 
-	// TODO:Конструктор перемещения.
+	// Конструктор перемещения.
 	template <class T>
-	BinarySearchTree<T>::BinarySearchTree(BinarySearchTree<T>&& scr)
+	BinarySearchTree<T>::BinarySearchTree(BinarySearchTree<T>&& src)
 	{
-		// ???
+		root_ = src.root_;
+		src.root_ = nullptr;
 	}
 
 	// .........................................................................
 
-	// TODO: Перегрузка оператора =.
+	// Оператор перемещающего присваивания.
 	template <class T>
 	BinarySearchTree<T>& BinarySearchTree<T>::operator= (BinarySearchTree <T>&& src)
 	{
-		// ???
+		deleteSubtree(root_);
+		root_ = src.root_;
+		src.root_ = nullptr;
 	}
 
 	// .........................................................................
 
-	// TODO:Деструктор освобождает память, занятую узлами дерева
+	// Деструктор освобождает память, занятую узлами дерева
 	template <class T>
 	BinarySearchTree<T>::~BinarySearchTree()
 	{
 		deleteSubtree(root_);
 	}
 
-	// TODO:Рекурсивная функция для освобождения памяти
+	// Рекурсивная функция для освобождения памяти
 	template <class T>
 	void BinarySearchTree<T>::deleteSubtree(Node<T>* node)
 	{
-		// ??? 
+		if (node !=nullptr){
+			if (node->left_ != nullptr)
+			{
+				deleteSubtree(node->left_);
+			}
+			if (node->right_ != nullptr)
+			{
+				deleteSubtree(node->right_);
+			}
+			// На этом этапе мы уверены, что у node удалены левые и правые поддеревья. Т.е. node - лист.
+			if (node->p_ == nullptr) // Если node - корень - удаляем его как корень.
+			{
+				root_ = nullptr;
+				delete node;
+			}
+			else
+			{
+				if ((node->p_->left_ != nullptr) && (node->p_->left_->key_ == node->key_))
+				{
+					node->p_->left_ = nullptr;
+					delete node;
+				}
+				else if ((node->p_->right_ != nullptr) && (node->p_->right_->key_ == node->key_))
+				{
+					node->p_->right_ = nullptr;
+					delete node;
+				}
+			}
+		}
 	}
 
-	// ......................................................................... 
+	// .........................................................................
 
-	// TODO: метод свап.
+	// Метод свап.
 	template <class T>
-	void BinarySearchTree<T>::swap(BinarySearchTree <T>& left, BinarySearchTree <T>& right)
+	void BinarySearchTree<T>::swap(BinarySearchTree<T>& left, BinarySearchTree<T>& right)
 	{
-		// ??? использовать swap
+		std::swap(left.root_, right.root_);
 	}
 	// .........................................................................
 
-	// TODO:1.1 Функция поиска по ключу в бинарном дереве поиска
+	// 1.1 Функция поиска по ключу в бинарном дереве поиска
 	template <class T>
 	bool BinarySearchTree<T>::iterativeSearch(const T& key)  const
 	{
 		return (iterativeSearchNode(key) != nullptr);
 	}
 
-	// TODO:1.2 Функция поиска адреса узла по ключу в бинарном дереве поиска
+	// 1.2 Функция поиска адреса узла по ключу в бинарном дереве поиска
 	template <class T>
 	BinarySearchTree<T>::Node<T>* BinarySearchTree<T>::iterativeSearchNode(const T& key) const
 	{
-		// ???
-		return nullptr; // ??? заменить при реализации
+		Node<T>* x = root_;
+
+		while ((x != nullptr) && (x->key_ != key))
+		{
+			if (key < x->key_)
+			{
+				x = x->left_;
+			}
+			else
+			{
+				x = x->right_;
+			}
+		}
+
+		return x;
 	}
 	// .........................................................................
 	
-	// TODO: 2. Вставка нового элемента в дерево:
+	// 2. Вставка нового элемента в дерево:
 	// true,если элемент добавлен; false, если элемент уже был
 	template <class T>
 	bool BinarySearchTree<T>::insert(const T& key)
 	{
-		// ???
-		return true; // ??? заменить при реализации
+		Node<T>* x = root_; // Проверяемый узел.
+		Node<T>* y = nullptr; // Хранитель родителя (изначально nullptr).
+
+		if (root_ == nullptr) // Если дерево изначально пустое - вставляемый элемент станет корнем.
+		{
+			Node<T>* newRoot = new Node<T>(key, nullptr, nullptr, nullptr);
+			root_ = newRoot;
+			return true;
+		}
+
+		while (x != nullptr)
+		{
+			if (x->key_ == key) // Не добавляем элемент с ключем, который есть в дереве.
+			{
+				return false;
+			}
+			y = x;
+			if (key < x->key_)
+			{
+				x = x->left_;
+			}
+			else
+			{
+				x = x->right_;
+			}
+		}
+		if (key < y->key_)
+		{
+			y->left_ = new Node<T>(key, nullptr, nullptr, y);
+			return true;
+		}
+		else
+		{
+			y->right_ = new Node<T>(key, nullptr, nullptr, y);
+			return true;
+		}
 	}
 	// .........................................................................
 
-	// TODO: 3. Удаление элемента из дерева, не нарушающее порядка элементов
+	// 3. Удаление элемента из дерева, не нарушающее порядка элементов
 	template <class T>
 	bool BinarySearchTree<T>::deleteKey(const T& key)
 	{
-		// . . . 
+		Node<T>* node = iterativeSearchNode(key);
+		if (node == nullptr)
+		{
+			return false;
+		}
+
+		if ((node->left_ == nullptr) && (node->right_ == nullptr))
+		{ // Удаляем лист.
+			if (node->p_ == nullptr)
+			{
+				root_ = nullptr;
+				delete node;
+				return true;
+			}
+			else
+			{
+				if ((node->p_->left_ != nullptr) && (node->p_->left_->key_ == node->key_))
+				{
+					node->p_->left_ = nullptr;
+					delete node;
+					return true;
+				}
+				if ((node->p_->right_ != nullptr) && (node->p_->right_->key_ == node->key_))
+				{
+					node->p_->right_ = nullptr;
+					delete node;
+					return true;
+				}
+			}
+		}
+		else if (((node->left_ != nullptr) && (node->right_ == nullptr)))
+		{ // Удаляем узел только с левым ребенком.
+			if (node->p_ == nullptr)
+			{
+				node->left_->p_ = nullptr;
+				root_ = node->left_;
+				delete node;
+				return true;
+			}
+			else
+			{
+				if ((node->p_->left_ != nullptr) && (node->p_->left_->key_ == node->key_))
+				{
+					node->left_->p_ = node->p_;
+					node->p_->left_ = node->left_;
+					delete node;
+					return true;
+				}
+				if ((node->p_->right_ != nullptr) && (node->p_->right_->key_ == node->key_))
+				{
+				node->left_->p_ = node->p_;
+				node->p_->right_ = node->left_;
+				delete node;
+				return true;
+				}
+			}
+		}
+		else if (((node->left_ == nullptr) && (node->right_ != nullptr)))
+		{ // Удаляем узел только с правым ребенком.
+			if (node->p_ == nullptr)
+			{
+				node->right_->p_ = nullptr;
+				root_ = node->right_;
+				delete node;
+				return true;
+			}
+			else
+			{
+				if ((node->p_->left_ != nullptr) && (node->p_->left_->key_ == node->key_))
+				{
+					node->right_->p_ = node->p_;
+					node->p_->left_ = node->right_;
+					delete node;
+					return true;
+				}
+				if ((node->p_->right_ != nullptr) && (node->p_->right_->key_ == node->key_))
+				{
+					node->right_->p_ = node->p_;
+					node->p_->right_ = node->right_;
+					delete node;
+					return true;
+				}
+			}
+		}
+		else if (((node->left_ != nullptr) && (node->right_ != nullptr)))
+		{ // Удаляем узел с обоими детьми. Будем искать минимальный элемент из правого поддерева.
+			Node<T>* x  = node->right_;
+			while (x->left_ != nullptr)
+			{
+				x = x->left_;
+			} // Теперь x - минимальный элемент из правого поддерева.
+			if ((x->p_->left_ != nullptr) && (x->p_->left_->key_ == x->key_)) // Если x - слева от своего родителя.
+			{
+				x->p_->left_ = x->right_; // Добавляем к родителю правую ветку x (левой точно нет).
+				if (x->right_) // Устанавливаем родителя возможной правой ветки x как родителя самого x.
+				{
+					x->right_->p_ = x->p_;
+				}
+			}
+			if ((x->p_->right_ != nullptr) && (x->p_->right_->key_ == x->key_)) // Если x - справа от своего родителя.
+			{
+				x->p_->right_ = x->right_; // Добавляем к родителю правую ветку x (левой точно нет).
+				if (x->right_) // Устанавливаем родителя возможной правой ветки x как родителя самого x.
+				{
+					x->right_->p_ = x->p_;
+				}
+			}
+			// У нас "в буфере" появился элемент x, которым мы должны заменить удаляемый элемент.
+			// Мы можем сделать проще - удаляемом элементе поставить значение элемента x, а элемент x удалить.
+			node->key_ = x->key_;
+			delete x;
+			return true;
+			/*if (node->p_ == nullptr)
+			{
+				root_ = x;
+				x->right_ = node->right_;
+				node->right_->p_ = x;
+				x->left_ = node ->left_;
+				node->left_->p_ = x;
+				delete node;
+				return true;
+			}
+			else
+			{
+				if ((node->p_->left_ != nullptr) && (node->p_->left_->key_ == node->key_))
+				{
+					node->p_->left_ = x;
+					x->right_ = node->right_;
+					node->right_->p_ = x;
+					x->left_ = node->left_;
+					node->left_->p_ = x;
+					delete node;
+					return true;
+				}
+				if ((node->p_->right_ != nullptr) && (node->p_->right_->key_ == node->key_))
+				{
+					node->p_->right_ = x;
+					x->right_ = node->right_;
+					node->right_->p_ = x;
+					x->left_ = node->left_;
+					node->left_->p_ = x;
+					delete node;
+					return true;
+				}
+			}*/
+		}
 	}
 	// .........................................................................
 
-	// TODO:4.1 Печать строкового изображения дерева в выходной поток out
+	// 4.1 Печать строкового изображения дерева в выходной поток out
 	template <class T>
 	void BinarySearchTree<T>::print(std::ostream& out) const
 	{
@@ -185,7 +410,7 @@ private:
 		out << std::endl;
 	}
 
-	// TODO: 4.2 Рекурсивная функция для вывода изображения дерева в выходной поток
+	// 4.2 Рекурсивная функция для вывода изображения дерева в выходной поток
 	template <class T>
 	void BinarySearchTree<T>::printNode(std::ostream& out, Node<T>* root) const
 	{
@@ -202,14 +427,14 @@ private:
 	}
 	// .........................................................................
 
-	// TODO:5.1 Определение количества узлов дерева
+	// 5.1 Определение количества узлов дерева
 	template <class T>
 	int BinarySearchTree<T>::getCount() const
 	{
-		return getCountSubTree(this->root_);
+		return getCountSubTree(root_);
 	}
 
-	// TODO: 5.2 Рекурсивная функция определения количества узлов дерева
+	// 5.2 Рекурсивная функция определения количества узлов дерева
 	template <class T>
 	int BinarySearchTree<T>::getCountSubTree(const Node<T>* node) const
 	{
@@ -220,49 +445,119 @@ private:
 	}
 	// .........................................................................
 	
-	// TODO:6.1 Определение высоты дерева
+	// 6.1 Определение высоты дерева
 	template <class T>
 	int BinarySearchTree<T>::getHeight() const
 	{
-		return getHeightSubTree(this->root_);
+		return getHeightSubTree(root_) - 1;
 	}
 
-	// TODO:6.2 Рекурсивная функция определения высоты дерева
+	// 6.2 Рекурсивная функция определения высоты дерева
 	template <class T>
 	int BinarySearchTree<T>::getHeightSubTree(Node<T>* node) const
 	{
-		// ??? 
-		return 0; // ??? заменить при реализации
+		if (node == nullptr)
+		{
+			return 0;
+		}
+
+		return std::max(1 + getHeightSubTree(node->left_), 1 + getHeightSubTree(node->right_));
 	}
 	// .........................................................................
 
-	// TODO: 7. Инфиксный обход дерева (итеративный)
+	// 7. Инфиксный обход дерева (итеративный)
 	template <class T>
 	void BinarySearchTree<T>::iterativeInorderWalk() const
 	{
-		// ??? 
+		std::stack<Node<T>*> nodeStack; // Стек, хранящий указатели на узлы.
+		Node<T>* node = root_; // Узел, который смотрим.
+		while ((nodeStack.size() != 0) || (node != nullptr)) // Пока есть узлы на стеке в просмотр или узел, который смотрим не нулевой.
+		{
+			if (node != nullptr) // Если просматриваемый элемент ненулевой...
+			{
+				nodeStack.push(node); // Заносим его в очередь на просмотр.
+				node = node->left_; // А сами смотрим левого ребенка.
+			}
+			else // Если просматриваемый элемент нулевой.
+			{
+				node = nodeStack.top(); // Достаем следующий элемент со стека на просмотр.
+				nodeStack.pop();
+				std::cout << node->key_; // Смотрим его значение.
+				std::cout << ", ";
+				node = node->right_; // Переходим к правому ребенку.
+			}
+		}
+		std::cout << "\n";
 	}
 	// .........................................................................
 	
-	// TODO: 8.1 Инфиксный обход дерева (рекурсивный)
+	// 8.1 Инфиксный обход дерева (рекурсивный)
 	template <class T>
 	void BinarySearchTree<T>::inorderWalk() const
 	{
-		return inorderWalk(this->root_);
+		inorderWalk(root_);
+		std::cout << "\n";
 	}
-	// TODO: 8.2 Рекурсивная функция для организации обхода узлов дерева.
+	// 8.2 Рекурсивная функция для организации обхода узлов дерева.
 	template <class T>
 	void BinarySearchTree<T>::inorderWalk(Node<T>* node) const
 	{
-		// ??? 
+		if (node != nullptr)
+		{
+			inorderWalk(node->left_);
+			std::cout << node->key_;
+			std::cout << ", ";
+			inorderWalk(node->right_);
+		}
 	}
 	// .........................................................................
 
-	// TODO:9. Сравнение деревьев: true, если все узлы деревьев одинаковые
+	// Сравнение деревьев: true, если все узлы деревьев одинаковые
 	template <class T>
 	bool BinarySearchTree<T>::operator== (const BinarySearchTree <T>& src)
 	{
-		// ???
+		std::vector<T> vec1;
+		std::vector<T> vec2;
+		Node<T>* node1 = root_;
+		Node<T>* node2 = src.root_;
+		std::stack<Node<T>*> nodeStack1;
+		std::stack<Node<T>*> nodeStack2;
+
+		// Итеративно обходим оба дерева и заносим их в вектор.
+
+		while ((nodeStack1.size() != 0) || (node1 != nullptr))
+		{
+			if (node1 != nullptr)
+			{
+				nodeStack1.push(node1);
+				node1 = node1->left_;
+			}
+			else
+			{
+				node1 = nodeStack1.top();
+				nodeStack1.pop();
+				vec1.push_back(node1->key_);
+				node1 = node1->right_;
+			}
+		}
+		while ((nodeStack2.size() != 0) || (node2 != nullptr))
+		{
+			if (node2 != nullptr)
+			{
+				nodeStack2.push(node2);
+				node2 = node2->left_;
+			}
+			else
+			{
+				node2 = nodeStack2.top();
+				nodeStack2.pop();
+				vec2.push_back(node2->key_);
+				node2 = node2->right_;
+			}
+		}
+
+		return vec1 == vec2;
+
 	}
 
 #endif
