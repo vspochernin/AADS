@@ -2,6 +2,7 @@
 
 #include <memory> // std::shared_ptr
 #include "queue-array.hpp"
+#include "binary-search-tree.hpp"
 
 int main()
 {
@@ -93,6 +94,172 @@ int main()
   {
     std::cout << error.what() << "\n";
   }
+  std::cout << "--------------------------------------------------------------\n";
+
+  std::cout << "\nПрелюдия к тестам деревьев.\n";
+  std::cout << "--------------------------------------------------------------\n";
+  std::cout << "Для тестов деревьев у нас будет несколько типов деревьев, которые мы будем использовать.\n";
+  std::cout << "Я создам и заполню их здесь, я работать с ними буду уже в тестах\n";
+  std::cout << "\n1-е дерево: как в презентации:\n";
+  BinarySearchTree<int> tree1;
+  tree1.insert(8);
+  tree1.insert(3);
+  tree1.insert(10);
+  tree1.insert(6);
+  tree1.insert(4);
+  tree1.insert(7);
+  tree1.insert(1);
+  tree1.insert(14);
+  tree1.print(std::cout);
+  std::cout << "\n2-е дерево: как в презентации, но без элемента 14:\n";
+  BinarySearchTree<int> tree2;
+  tree2.insert(8);
+  tree2.insert(3);
+  tree2.insert(10);
+  tree2.insert(6);
+  tree2.insert(4);
+  tree2.insert(7);
+  tree2.insert(1);
+  tree2.print(std::cout);
+  std::cout << "\n3-е дерево: как в презентации, но без элемента 8:\n";
+  BinarySearchTree<int> tree3;
+  tree3.insert(3);
+  tree3.insert(10);
+  tree3.insert(6);
+  tree3.insert(4);
+  tree3.insert(7);
+  tree3.insert(1);
+  tree3.insert(14);
+  tree3.print(std::cout);
+  std::cout << "\n4-е дерево: как в презентации, но вырожденное:\n";
+  BinarySearchTree<int> tree4;
+  tree4.insert(1);
+  tree4.insert(3);
+  tree4.insert(4);
+  tree4.insert(6);
+  tree4.insert(7);
+  tree4.insert(8);
+  tree4.insert(10);
+  tree4.insert(14);
+  tree4.print(std::cout);
+  std::cout << "\n5-е дерево: как в презентации, но вырожденное и без элемента 14:\n";
+  BinarySearchTree<int> tree5;
+  tree5.insert(1);
+  tree5.insert(3);
+  tree5.insert(4);
+  tree5.insert(6);
+  tree5.insert(7);
+  tree5.insert(8);
+  tree5.insert(10);
+  tree5.print(std::cout);
+  std::cout << "\n6-е дерево: как в презентации, но вырожденное и без элемента 8:\n";
+  BinarySearchTree<int> tree6;
+  tree6.insert(1);
+  tree6.insert(3);
+  tree6.insert(4);
+  tree6.insert(6);
+  tree6.insert(7);
+  tree6.insert(10);
+  tree6.insert(14);
+  tree6.print(std::cout);
+  std::cout << "\n7-е дерево: как в презентации, но вырожденное и без элемента 1:\n";
+  BinarySearchTree<int> tree7;
+  tree7.insert(3);
+  tree7.insert(4);
+  tree7.insert(6);
+  tree7.insert(7);
+  tree7.insert(8);
+  tree7.insert(10);
+  tree7.insert(14);
+  tree7.print(std::cout);
+  std::cout << "\n8-е дерево: пустое:\n";
+  BinarySearchTree<int> tree8;
+  tree8.print(std::cout);
+  std::cout << "--------------------------------------------------------------\n";
+
+  std::cout << "\nТест 7: итеративный метод обхода двоичного дерева в ширину.\n";
+  std::cout << "--------------------------------------------------------------\n";
+  std::cout << "1-е дерево: ";
+  tree1.breadthFirstWalk();
+  std::cout << "2-е дерево: ";
+  tree2.breadthFirstWalk();
+  std::cout << "3-е дерево: ";
+  tree3.breadthFirstWalk();
+  std::cout << "4-е дерево: ";
+  tree4.breadthFirstWalk();
+  std::cout << "5-е дерево: ";
+  tree5.breadthFirstWalk();
+  std::cout << "6-е дерево: ";
+  tree6.breadthFirstWalk();
+  std::cout << "7-е дерево: ";
+  tree7.breadthFirstWalk();
+  std::cout << "8-е дерево: ";
+  tree8.breadthFirstWalk();
+  std::cout << "--------------------------------------------------------------\n";
+
+  std::cout << "\nТест 8: итеративный метод обхода двоичного дерева (инфиксный). Дерево из презентации.\n";
+  std::cout << "--------------------------------------------------------------\n";
+  std::cout << "1-е дерево: ";
+  tree1.iterativeInorderWalk();
+  std::cout << "2-е дерево: ";
+  tree2.iterativeInorderWalk();
+  std::cout << "3-е дерево: ";
+  tree3.iterativeInorderWalk();
+  std::cout << "4-е дерево: ";
+  tree4.iterativeInorderWalk();
+  std::cout << "5-е дерево: ";
+  tree5.iterativeInorderWalk();
+  std::cout << "6-е дерево: ";
+  tree6.iterativeInorderWalk();
+  std::cout << "7-е дерево: ";
+  tree7.iterativeInorderWalk();
+  std::cout << "8-е дерево: ";
+  tree8.iterativeInorderWalk();
+  std::cout << "--------------------------------------------------------------\n";
+
+  std::cout << "\nТест 9: проверка похожести деревьев. Дерево из презентации.\n";
+  std::cout << "--------------------------------------------------------------\n";
+  std::cout << "1-е дерево:";
+  tree1.print(std::cout);
+  std::cout << "1-е дерево:";
+  tree1.print(std::cout);
+  std::cout << "Похожи ли деревья? " << ((tree1 == tree1) ? "Да!" : "Нет!") << "\n\n";
+
+  std::cout << "1-е дерево:";
+  tree1.print(std::cout);
+  std::cout << "2-е дерево:";
+  tree2.print(std::cout);
+  std::cout << "Похожи ли деревья? " << ((tree1 == tree2) ? "Да!" : "Нет!") << "\n\n";
+
+  std::cout << "1-е дерево:";
+  tree1.print(std::cout);
+  std::cout << "3-е дерево:";
+  tree3.print(std::cout);
+  std::cout << "Похожи ли деревья? " << ((tree1 == tree3) ? "Да!" : "Нет!") << "\n\n";
+
+  std::cout << "1-е дерево:";
+  tree1.print(std::cout);
+  std::cout << "4-е дерево:";
+  tree4.print(std::cout);
+  std::cout << "Похожи ли деревья? " << ((tree1 == tree4) ? "Да!" : "Нет!") << "\n\n";
+
+  std::cout << "3-е дерево:";
+  tree3.print(std::cout);
+  std::cout << "6-е дерево:";
+  tree6.print(std::cout);
+  std::cout << "Похожи ли деревья? " << ((tree3 == tree6) ? "Да!" : "Нет!") << "\n\n";
+
+  std::cout << "1-е дерево:";
+  tree1.print(std::cout);
+  std::cout << "8-е дерево:";
+  tree8.print(std::cout);
+  std::cout << "Похожи ли деревья? " << ((tree1 == tree8) ? "Да!" : "Нет!") << "\n\n";
+
+  std::cout << "8-е дерево:";
+  tree8.print(std::cout);
+  std::cout << "8-е дерево:";
+  tree8.print(std::cout);
+  std::cout << "Похожи ли деревья? " << ((tree8 == tree8) ? "Да!" : "Нет!") << "\n";
   std::cout << "--------------------------------------------------------------\n";
 
   return 0;

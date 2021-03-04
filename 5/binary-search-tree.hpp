@@ -6,6 +6,7 @@
 #include <iostream>
 #include <stack> // Для итеративного обхода дерева.
 #include <vector> // Для перегрузки оператора ==.
+#include <queue> // Для обхода в ширину
 
 //
 // Определение шаблона класса BinarySearchTree.
@@ -57,6 +58,9 @@ public:
 
 	// 9 Сравнение деревьев: true, если все узлы деревьев одинаковые.
 	bool operator== (const BinarySearchTree<T>& src);
+
+	// 10 Итеративный обход дерева по уровням (в ширину).
+	void breadthFirstWalk() const;
 
 private:
 	// Описание структуры узла со ссылками на детей и родителя.
@@ -463,6 +467,11 @@ private:
 	template <class T>
 	void BinarySearchTree<T>::iterativeInorderWalk() const
 	{
+    if (root_ == nullptr)
+    {
+      std::cout << "\n";
+      return; // Пустое дерево никак не обойти.
+    }
 		std::stack<Node<T>*> nodeStack; // Стек, хранящий указатели на узлы.
 		Node<T>* node = root_; // Узел, которому смотрим.
 		while ((nodeStack.size() != 0) || (node != nullptr)) // Пока есть узлы на стеке в просмотр или узел, который смотрим ненулевой.
@@ -505,6 +514,36 @@ private:
 		}
 	}
 	// .........................................................................
+
+  // 10 Итеративный обход дерева по уровням (в ширину).
+  template <class T>
+  void BinarySearchTree<T>::breadthFirstWalk() const
+  {
+    if (root_ == nullptr)
+    {
+      std::cout << "\n";
+      return; // Пустое дерево никак не обойти.
+    }
+    Node<T>* topElem = nullptr; // Указатель на верхний элемент очереди.
+    std::queue<Node<T>*> nodeQueue; // Очередь, хранящая указатели на узлы.
+    nodeQueue.push(root_); // Сначала помещаем в неё корень.
+    while (!nodeQueue.empty())
+    {
+      topElem = nodeQueue.front(); // Кладем в указатель на верхний элемент верхний элемент.
+      std::cout << topElem->key_; // Выводим его
+      std::cout << ", ";
+      nodeQueue.pop();
+      if (topElem->left_ != nullptr)
+      {
+        nodeQueue.push(topElem->left_); // Заносим в очередь левого ребенка, если таковой есть.
+      }
+      if (topElem->right_ != nullptr)
+      {
+        nodeQueue.push(topElem->right_); // Заносим в очередь правого ребенка, если таковой есть.
+      }
+    }
+    std::cout << "\n";
+  }
 
 	// 9 Сравнение деревьев: true, если все узлы деревьев одинаковые.
 	template <class T>
@@ -554,6 +593,10 @@ private:
 
 		// Если два вектора равны - значит равны и два дерева, породившие эти вектора.
 		return vec1 == vec2;
+		// Этот метод проверяет именно похожесть деревьев, как и сказано в задании.
+		// Значения будут вноситься в дерево инфиксным обходом - а значит будут идти по возрастанию.
+		// И если два дерева похожи, т.е. состоят из одинаковых значенений, то, независимо от конфигурации элементов
+		// создадутся одинаковые вектора.
 	}
 
 #endif
