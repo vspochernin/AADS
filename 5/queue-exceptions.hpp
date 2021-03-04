@@ -10,16 +10,32 @@ class QueueOverflow: public std::exception
 {
 public:
   QueueOverflow():
-    std::exception("Queue Overflow")
+    reason_("Queue Overflow")
   {}
+
+  const char* what() const noexcept override
+  {
+    return reason_;
+  }
+
+private:
+  const char* reason_;
 };
 
 class QueueUnderflow: public std::exception
 {
 public:
   QueueUnderflow():
-    std::exception("Queue Underflow")
+    reason_("Queue Underflow")
   {}
+
+  const char* what() const noexcept override
+  {
+    return reason_;
+  }
+
+private:
+  const char* reason_;
 };
 
 // Исключительная ситуация WrongQueueSize может возникнуть,
@@ -29,8 +45,16 @@ class WrongQueueSize: public std::exception
 {
 public:
   WrongQueueSize():
-    std::exception("Wrong Queue Size")
+    reason_("Wrong Queue Size")
   {}
+
+  const char* what() const noexcept override
+  {
+    return reason_;
+  }
+
+private:
+  const char* reason_;
 };
 
 #endif

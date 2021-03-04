@@ -10,14 +10,14 @@ class QueueArray final: public Queue<T> // Модификатор final запр
 {
 public:
   QueueArray(const QueueArray<T>& src) = delete;
-  QueueArray(QueueArray<T>&& src);
+  QueueArray(QueueArray<T>&& src) noexcept;
 
-  QueueArray(size_t size);
+  explicit QueueArray(size_t size);
 
   virtual ~QueueArray() override;
 
   QueueArray<T>& operator=(const QueueArray<T>& src) = delete;
-  QueueArray<T>& operator=(QueueArray<T> && src); // Оператор перемещающего присваивания.
+  QueueArray<T>& operator=(QueueArray<T> && src) noexcept; // Оператор перемещающего присваивания.
 
   void enQueue(const T& e) override;
   T deQueue() override;
@@ -33,7 +33,7 @@ private:
 };
 
 template <typename T>
-QueueArray<T>::QueueArray<T>(QueueArray<T>&& src):
+QueueArray<T>::QueueArray(QueueArray<T>&& src) noexcept:
   array_(src.array_),
   head_(src.head_),
   tail_(src.tail_),
@@ -46,7 +46,7 @@ QueueArray<T>::QueueArray<T>(QueueArray<T>&& src):
 }
 
 template <typename T>
-QueueArray<T>::QueueArray<T>(size_t size):
+QueueArray<T>::QueueArray(size_t size):
   array_(nullptr),
   head_(1),
   tail_(1),
@@ -63,13 +63,13 @@ QueueArray<T>::QueueArray<T>(size_t size):
 }
 
 template <typename T>
-QueueArray<T>::~QueueArray<T>()
+QueueArray<T>::~QueueArray()
 {
-  delete array_;
+  delete[] array_;
 }
 
 template <typename T>
-QueueArray<T>& QueueArray<T>::operator=(QueueArray<T> && src)
+QueueArray<T>& QueueArray<T>::operator=(QueueArray<T> && src) noexcept
 {
   array_ = src.array_;
   head_ = src.head_;
@@ -85,7 +85,7 @@ QueueArray<T>& QueueArray<T>::operator=(QueueArray<T> && src)
 template <typename T>
 void QueueArray<T>::enQueue(const T& e)
 {
-  if ((head_ == tail_ + 1) || ((head_ == 0) && (tail_ = size_))) // Если следующий за tail_ - head_, то мы не можем записать
+  if ((head_ == tail_ + 1) || ((head_ == 0) && (tail_ == size_))) // Если следующий за tail_ - head_, то мы не можем записать
   {                                                              // т.к. станет выполняться условие пустоты.
     throw QueueOverflow(); // Нет места для новго элемента.
   }
@@ -124,7 +124,7 @@ T QueueArray<T>::deQueue()
 template <typename T>
 bool QueueArray<T>::isEmpty() const
 {
-  return head_ == tail;
+  return head_ == tail_;
 }
 
 template <typename T>

@@ -7,7 +7,7 @@ template <class T>
 class Queue
 {
 public:
-  virtual ~Queue() = 0;
+  virtual ~Queue() = default;
 
   virtual void enQueue(const T& e) = 0; // Добавление элемента в стек.
   virtual T deQueue() = 0; // Удаление и возвращение верхнего элемента.
