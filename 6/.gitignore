@@ -2,4 +2,4 @@
 Makefile
 .depend
 app
-main.o
+*.o
