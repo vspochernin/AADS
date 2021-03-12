@@ -6,13 +6,13 @@
 #include <iostream>
 #include <iomanip> // Красивый вывод.
 
-void fillVector(std::vector<int>& vec, const size_t count)
+void fillVector(std::vector<int>& vec, const size_t count, const int min, const int max)
 {
   vec.clear();
   srand(time(0));
   for (size_t i = 0; i < count; i++)
   {
-    vec.push_back(rand() % (100 - (-100) + 1) + (-100)); // Случайные числа из отрезка [-100; 100].
+    vec.push_back(rand() % (max - min + 1) + min); // Случайные числа из отрезка [min; max].
   }
 }
 
@@ -48,24 +48,39 @@ bool isVectorSorted(const std::vector<int>& vec)
 // Бинарный поиск места вставки элемента для сортировки вставками.
 // left - индекс крайнего левого элемента.
 // right - индекс крайнего правого элемента.
+// При этом надо помнить, что если искомых элементов несколько, надо будет выбрать позицию за ними.
+// Этого буду добиваться уже в алгоритме сортировки.
 size_t binarySearchPlace(const std::vector<int>& vec, int element, size_t left, size_t right)
 {
-  size_t mid = (left + right) / 2; // Вычисляем номер элемента по середине. При четном количестве, элемент будет левее середины.
-  int midValue = vec[mid];
-  if (midValue == element) // Если элемент по середине равен искомому...
+  while (left < right)
   {
-    return mid; // ... возвращаем его номер.
+    size_t mid = (left + right) / 2; // Вычисляем номер элемента по середине. При четном количестве, элемент будет левее середины.
+    if (element < vec[mid]) // Если искомый элемент меньше элемента по середине...
+    {
+      right = mid; // ...будем смотреть отрезок [left; mid].
+    }
+    else // Иначе...
+    {
+      left = mid + 1; // ...будем смотреть отрезок [mid + 1; right].
+    }
   }
-  if (left == right) // Если элемент по середине не прошел проверку на равенство искомому, при это он остался один...
+  return left; // Получим индекс самого левого элемента, который нужно передвинуть.
+}
+
+void insertionBinarySort(std::vector<int>& vec)
+{
+  for (size_t i = 1; i < vec.size(); i++) // Цикл по всем неотсортированным элементам.
   {
-    return mid; // ... все равно возвращаем его номер. (Если бы искали наличие элемента, а не место, куда поставить, вернули бы -1)
-  }
-  if (midValue > element) // Если элемент по середине оказался больше искомого...
-  {
-    return binarySearchPlace(vec, element, left, mid); // ... запускаем бинарный поиск на отрезке [left; mid].
-  }
-  if (midValue < element) // Если элемент по сеедине оказался меньше искомого...
-  {
-    return binarySearchPlace(vec, element, mid + 1, right); // ... Запускаем бинарный поиск на отрезке [mid + 1, right].
+    if (vec[i] >= vec[i-1]) // Если элемент уже на своем месте...
+    {
+      continue; // ...ничего не делаем.
+    }
+    int insertValue = vec[i];
+    size_t mostLeftIndex = binarySearchPlace(vec, vec[i], 0, i - 1); // Индекс самого левого элемента, который нужно передвинуть.
+    for (size_t j = i; j > mostLeftIndex; j--)
+    {
+      vec[j] = vec[j - 1];
+    }
+    vec[mostLeftIndex] = insertValue;
   }
 }
