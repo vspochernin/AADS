@@ -4,15 +4,15 @@
 #include <stdlib.h> // srand, rand
 #include <vector>
 #include <iostream>
-#include <iomanip> // Красивый вывод
+#include <iomanip> // Красивый вывод.
 
-void fillVector(std::vector<int>& vec, size_t count)
+void fillVector(std::vector<int>& vec, const size_t count)
 {
   vec.clear();
   srand(time(0));
   for (size_t i = 0; i < count; i++)
   {
-    vec.push_back(rand() % (100 - (-100) + 1) + (-100));
+    vec.push_back(rand() % (100 - (-100) + 1) + (-100)); // Случайные числа из отрезка [-100; 100].
   }
 }
 
@@ -23,6 +23,7 @@ void printVector(const std::vector<int>& vec, std::ostream& out)
   {
     out << std::setw(4) << vec[i] << " ";
     // Переводим строчки через каждые 10 элементов для красивого вывода.
+    // Если строка последняя - её переводить не надо.
     if ((((i + 1) % 10) == 0) && ((i + 1) != vec.size()))
     {
       out << "\n";
@@ -31,6 +32,7 @@ void printVector(const std::vector<int>& vec, std::ostream& out)
   out << "\n--------------------------------------------------\n";
 }
 
+// Проверка, отсортирован ли вектор по неубыванию.
 bool isVectorSorted(const std::vector<int>& vec)
 {
   for (size_t i = 1; i < vec.size(); i++)
