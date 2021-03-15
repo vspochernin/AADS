@@ -11,7 +11,9 @@ int getTheLongestNumberLength(const std::vector<int>& vec); // Длинна са
 bool isVectorSorted(const std::vector<int>& vec); // Проверка, отсортирован ли вектор по неубыванию.
 size_t binarySearchPlace(const std::vector<int>& vec, int element, size_t left, size_t right); // Бинарный поиск самого левого элемента, который надо передвинуть.
 int getDigit(int number, int digit); // Получить digit-ый разряд числа number.
+void mergeVector(std::vector<int>& vec, size_t left, size_t middle, size_t right); // Слить в векторе два отрезка: [left; middle] и [middle + 1; right].
 
 // Сортировки.
 void insertionBinarySort(std::vector<int>& vec); // Сортировка по методу вставок с двоичным поиском места вставки.
 void radixSort(std::vector<int>& vec); // Поразрядная сортировка.
+void mergeIterativeSort(std::vector<int>& vec); // Итеративная сортировка слиянием.

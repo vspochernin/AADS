@@ -193,3 +193,70 @@ void radixSort(std::vector<int>& vec)
     }
   }
 }
+
+void mergeVector(std::vector<int>& vec, size_t left, size_t middle, size_t right)
+{
+  std::vector<int> leftVec; // Вспомогательный вектор, хранящий элементы из левого отрезка.
+  std::vector<int> rightVec; // Вспомогательный вектор, хранящий элементы из правого отрезка.
+  // И соответственно заполняем их.
+  for (size_t i = left; i <= middle; i++)
+  {
+    leftVec.push_back(vec[i]);
+  }
+  for (size_t i = middle + 1; i <= right; i++)
+  {
+    rightVec.push_back(vec[i]);
+  }
+
+  size_t leftIndex = 0; // Переменная-указатель на левый вектор.
+  size_t rightIndex = 0; // Переменная-указатель на правый вектор.
+  size_t mainIndex = left; // Переменная-указатель на основной вектор.
+  while ((leftIndex < leftVec.size()) && (rightIndex < rightVec.size())) // Пока мы не исчерпаем один из векторов...
+  {
+    // ...записываем в основной вектор элементы во возрастанию.
+    if (leftVec[leftIndex] <= rightVec[rightIndex])
+    {
+      vec[mainIndex] = leftVec[leftIndex];
+      leftIndex++; // Увеличиваем указатель на левый вектор (если добавили оттуда).
+    }
+    else
+    {
+      vec[mainIndex] = rightVec[rightIndex];
+      rightIndex++; // Увеличиваем указатель на правый вектор (если добавили оттуда).
+    }
+    mainIndex++; // Соответственно, увеличиваем указатель на основной вектор.
+  }
+
+  // Добавляем в основной вектор оставшиеся элементы из левого (если таковые остались).
+  while (leftIndex < leftVec.size())
+  {
+    vec[mainIndex] = leftVec[leftIndex];
+    leftIndex++;
+    mainIndex++;
+  }
+
+  // Добавляем в основной вектор оставшиеся элементы из правого (если таковые остались).
+  while (rightIndex < rightVec.size())
+  {
+    vec[mainIndex] = rightVec[rightIndex];
+    rightIndex++;
+    mainIndex++;
+  }
+}
+
+void mergeIterativeSort(std::vector<int>& vec)
+{
+  // Будем поочередно сливать подвектора размерами от 1 до (vec.size() / 2),
+  // Увеличивая их размер в 2 раза за каждую итерацию.
+
+  for (size_t sizeOfMergeVec = 1; sizeOfMergeVec < vec.size(); sizeOfMergeVec *= 2)
+  {
+    for (size_t left = 0; left < vec.size() - 1; left += 2 * sizeOfMergeVec)
+    {
+      size_t middle = std::min(left + sizeOfMergeVec - 1, vec.size() - 1);
+      size_t right = std::min(left + (2 * sizeOfMergeVec), vec.size() - 1);
+
+      mergeVector(vec, left, middle, right);
+    }
+  }
+}
