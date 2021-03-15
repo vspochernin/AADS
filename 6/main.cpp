@@ -5,14 +5,16 @@
 
 int main()
 {
-  std::vector<int> testVec = {-139, -172};
-  //std::vector<int> testVec;
-  fillVector(testVec, 10000, -1000, 1000);
-  printVector(testVec, std::cout);
-  std::cout << "Start sorting\n";
-  //insertionBinarySort(testVec);
-  radixSort(testVec);
-  printVector(testVec, std::cout);
-  std::cout << "End sorting\n";
-  std::cout << (isVectorSorted(testVec) ? "Да\n" : "Нет\n");
+  std::vector<int> insertionVec;
+  std::vector<int> radixVec;
+  fillVector(insertionVec, 10000, -1000, 1000);
+  fillVector(radixVec, 10000, -1000, 1000);
+  //printVector(insertionVec, std::cout);
+  //printVector(radixVec, std::cout);
+  insertionBinarySort(insertionVec);
+  radixSort(radixVec);
+  std::cout << (isVectorSorted(insertionVec) ? "Вектор отсортирован вставками.\n" : "Вектор !!!НЕ!!! отсортирован вставками.\n");
+  std::cout << (isVectorSorted(radixVec) ? "Вектор отсортирован поразрядно.\n" : "Вектор !!!НЕ!!! отсортирован поразрадно.\n");
+  //printVector(insertionVec, std::cout);
+  //printVector(radixVec, std::cout);
 }
