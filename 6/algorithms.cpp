@@ -246,17 +246,49 @@ void mergeVector(std::vector<int>& vec, size_t left, size_t middle, size_t right
 
 void mergeIterativeSort(std::vector<int>& vec)
 {
-  // Будем поочередно сливать подвектора размерами от 1 до (vec.size() / 2),
-  // Увеличивая их размер в 2 раза за каждую итерацию.
+  // Будем сливать подвектора размерами от 1 элемента,
+  // увеличивая размер в 2 раза за каждую итерацию.
 
+  // Цикл по размерам сливаемых векторов.
   for (size_t sizeOfMergeVec = 1; sizeOfMergeVec < vec.size(); sizeOfMergeVec *= 2)
   {
+    // Цикл по left-индексам в этих векторах.
     for (size_t left = 0; left < vec.size() - 1; left += 2 * sizeOfMergeVec)
     {
+      // Определяем middle-индекс (если он выходит за пределы вектора - делаем его последним элементом)
       size_t middle = std::min(left + sizeOfMergeVec - 1, vec.size() - 1);
-      size_t right = std::min(left + (2 * sizeOfMergeVec), vec.size() - 1);
-
+      // Определяем right-индекс (если он выходит за пределы вектора - делаем его последним элементом)
+      size_t right = std::min(left + (2 * sizeOfMergeVec) - 1, vec.size() - 1);
+      // Сливаем подвектора.
       mergeVector(vec, left, middle, right);
     }
   }
 }
+
+/*void mergeIterativeSort(std::vector<int>&vec)
+{
+  int n = vec.size();
+  int curr_size;  // For current size of subarrays to be merged
+  // curr_size varies from 1 to n/2
+  int left_start; // For picking starting index of left subarray
+  // to be merged
+
+  // Merge subarrays in bottom up manner.  First merge subarrays of
+  // size 1 to create sorted subarrays of size 2, then merge subarrays
+  // of size 2 to create sorted subarrays of size 4, and so on.
+  for (curr_size=1; curr_size<=n-1; curr_size = 2*curr_size)
+  {
+    // Pick starting point of different subarrays of current size
+    for (left_start=0; left_start<n-1; left_start += 2*curr_size)
+    {
+      // Find ending point of left subarray. mid+1 is starting
+      // point of right
+      int mid = std::min(left_start + curr_size - 1, n-1);
+
+      int right_end = std::min(left_start + 2*curr_size - 1, n-1);
+
+      // Merge Subarrays arr[left_start...mid] & arr[mid+1...right_end]
+      mergeVector(vec, left_start, mid, right_end);
+    }
+  }
+}*/
