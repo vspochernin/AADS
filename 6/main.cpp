@@ -15,6 +15,8 @@ int main()
   SortFunctionPointer radixSortPointer = &radixSort;
   SortFunctionPointer mergeIterativeSortPointer = &mergeIterativeSort;
 
+  // Если к тестирующей функции добавить параметр true - включится отрисовка в консоль.
+
   std::cout << "Сортировка вставками с двоичным поиском-------------------------------------------------------------\n";
   testSort(insertionBinarySortPointer);
   std::cout << "\n";
