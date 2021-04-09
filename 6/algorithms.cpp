@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <iomanip> // Красивый вывод.
+#include <chrono>
+#include <math.h>
 
 void fillVector(std::vector<int>& vec, const size_t count, const int min, const int max)
 {
@@ -265,30 +267,259 @@ void mergeIterativeSort(std::vector<int>& vec)
   }
 }
 
-/*void mergeIterativeSort(std::vector<int>&vec)
+void testSort(SortFunctionPointer sortFunction, bool isPrint)
 {
-  int n = vec.size();
-  int curr_size;  // For current size of subarrays to be merged
-  // curr_size varies from 1 to n/2
-  int left_start; // For picking starting index of left subarray
-  // to be merged
+  bool check = true; // Переменная, которая покажет, нормально ли прошли тесты.
+  std::vector<int> testVec1; // Пустой вектор.
+  std::vector<int> testVec2; // Случайный вектор с переменным размером.
+  std::vector<int> testVec3; // Случайный вектор большого размера.
+  std::vector<int> testVec4; // Лучший случай.
+  std::vector<int> testVec5; // Худший случай.
 
-  // Merge subarrays in bottom up manner.  First merge subarrays of
-  // size 1 to create sorted subarrays of size 2, then merge subarrays
-  // of size 2 to create sorted subarrays of size 4, and so on.
-  for (curr_size=1; curr_size<=n-1; curr_size = 2*curr_size)
+  // Тест 1: пустой вектор.
+  testVec1.clear();
+  if(isPrint)
   {
-    // Pick starting point of different subarrays of current size
-    for (left_start=0; left_start<n-1; left_start += 2*curr_size)
+    std::cout << "Тест 1: пустой вектор-------------------------------------------------------------\n";
+    std::cout << "До сортировки:\n";
+    printVector(testVec1, std::cout);
+  }
+  sortFunction(testVec1);
+  if (!isVectorSorted(testVec1))
+  {
+    check = false;
+    if (isPrint)
     {
-      // Find ending point of left subarray. mid+1 is starting
-      // point of right
-      int mid = std::min(left_start + curr_size - 1, n-1);
-
-      int right_end = std::min(left_start + 2*curr_size - 1, n-1);
-
-      // Merge Subarrays arr[left_start...mid] & arr[mid+1...right_end]
-      mergeVector(vec, left_start, mid, right_end);
+      std::cout << "!!!ОШИБКА!!!\n";
     }
   }
-}*/
+  if (isPrint)
+  {
+    std::cout << "После сортировки:\n";
+    printVector(testVec1, std::cout);
+  }
+
+  // Тест 2: случайный вектор с переменным размером.
+  if(isPrint)
+  {
+    std::cout << "Тест 2: случайный вектор с переменным размером------------------------------------\n";
+  }
+  for (size_t count = 1; count <= 100; count++)
+  {
+    fillVector(testVec2, count, -100, 100);
+    if (isPrint)
+    {
+      std::cout << "Размер " << count << ", до сортировки:\n";
+      printVector(testVec2, std::cout);
+    }
+    sortFunction(testVec2);
+    if (!isVectorSorted(testVec2))
+    {
+      check = false;
+      if (isPrint)
+      {
+        std::cout << "!!!ОШИБКА!!!\n";
+      }
+    }
+    if (isPrint)
+    {
+      std::cout << "После сортировки:\n";
+      printVector(testVec2, std::cout);
+    }
+  }
+
+  // Тест 3: случайный вектор большого размера.
+  fillVector(testVec3, 10000, -1000, 1000);
+  if(isPrint)
+  {
+    std::cout << "Тест 3: случайный вектор большого размера-----------------------------------------\n";
+    std::cout << "До сортировки:\n";
+    printVector(testVec3, std::cout);
+  }
+  sortFunction(testVec3);
+  if (!isVectorSorted(testVec3))
+  {
+    check = false;
+    if (isPrint)
+    {
+      std::cout << "!!!ОШИБКА!!!\n";
+    }
+  }
+  if (isPrint)
+  {
+    std::cout << "После сортировки:\n";
+    printVector(testVec3, std::cout);
+  }
+
+  // Тест 4: лучший случай.
+  for (int i = -100; i <= 100; i++)
+  {
+    testVec4.push_back(i);
+  }
+  if(isPrint)
+  {
+    std::cout << "Тест 4: лучший случай-------------------------------------------------------------\n";
+    std::cout << "До сортировки:\n";
+    printVector(testVec4, std::cout);
+  }
+  sortFunction(testVec4);
+  if (!isVectorSorted(testVec4))
+  {
+    check = false;
+    if (isPrint)
+    {
+      std::cout << "!!!ОШИБКА!!!\n";
+    }
+  }
+  if (isPrint)
+  {
+    std::cout << "После сортировки:\n";
+    printVector(testVec4, std::cout);
+  }
+
+  // Тест 5: худший случай.
+  for (int i = 100; i >= -100; i--)
+  {
+    testVec5.push_back(i);
+  }
+  if(isPrint)
+  {
+    std::cout << "Тест 4: худший случай-------------------------------------------------------------\n";
+    std::cout << "До сортировки:\n";
+    printVector(testVec5, std::cout);
+  }
+  sortFunction(testVec5);
+  if (!isVectorSorted(testVec5))
+  {
+    check = false;
+    if (isPrint)
+    {
+      std::cout << "!!!ОШИБКА!!!\n";
+    }
+  }
+  if (isPrint)
+  {
+    std::cout << "После сортировки:\n";
+    printVector(testVec5, std::cout);
+  }
+
+  if (check)
+  {
+    std::cout << "Тестирование прошло кореектно, все векторы были успешно отсортированы.\n";
+  }
+  else
+  {
+    std::cout << "Тестирование прошло !!!НЕ!!! корректно, где-то была !!!ОШИБКА!!!.\n";
+  }
+}
+
+void testSortComplex()
+{
+  std::cout << "Тестирование сортировки вставками. Предполагаемая сложность: O(n^2).*************\n";
+  size_t n1 = 1000;
+  size_t n2 = 10000;
+  size_t n3 = 100000;
+  std::vector<int> testVec1;
+  std::vector<int> testVec2;
+  std::vector<int> testVec3;
+  fillVector(testVec1, n1, -10000, 10000);
+  fillVector(testVec2, n2, -10000, 10000);
+  fillVector(testVec3, n3, -10000, 10000);
+  std::chrono::steady_clock::time_point begin1 = std::chrono::steady_clock::now();
+  insertionBinarySort(testVec1);
+  std::chrono::steady_clock::time_point end1 = std::chrono::steady_clock::now();
+  std::chrono::steady_clock::time_point begin2 = std::chrono::steady_clock::now();
+  insertionBinarySort(testVec2);
+  std::chrono::steady_clock::time_point end2 = std::chrono::steady_clock::now();
+  std::chrono::steady_clock::time_point begin3 = std::chrono::steady_clock::now();
+  insertionBinarySort(testVec3);
+  std::chrono::steady_clock::time_point end3 = std::chrono::steady_clock::now();
+  std::cout << "Количество элементов 1: " << n1 << ".\n";
+  std::cout << "Время сортировки 1: " << std::chrono::duration_cast<std::chrono::seconds>(end1 - begin1).count() << " секунд.\n";
+  std::cout << "Время сортировки 1: " << std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1).count() << " микросекунд.\n";
+  std::cout << "Количество элементов 2: " << n2 << ".\n";
+  std::cout << "Время сортировки 2: " << std::chrono::duration_cast<std::chrono::seconds>(end2 - begin2).count() << " секунд.\n";
+  std::cout << "Время сортировки 2: " << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2).count() << " микросекунд.\n";
+  std::cout << "Количество элементов 3: " << n3 << ".\n";
+  std::cout << "Время сортировки 3: " << std::chrono::duration_cast<std::chrono::seconds>(end3 - begin3).count() << " секунд.\n";
+  std::cout << "Время сортировки 3: " << std::chrono::duration_cast<std::chrono::microseconds>(end3 - begin3).count() << " микросекунд.\n";
+  std::cout << "Ожидаемая разница во времени между 1 и 2 сортировкой: " << (n2/n1)*(n2/n1) << ".\n";
+  std::cout << "Реальная разница во времени между 1 и 2 сортировкой: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2) / std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1) << ".\n";
+  std::cout << "Ожидаемая разница во времени между 2 и 3 сортировкой: " << (n3/n2)*(n3/n2) << ".\n";
+  std::cout << "Реальная разница во времени между 2 и 3 сортировкой: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(end3 - begin3) / std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2) << ".\n";
+  std::cout << "Ожидаемая разница во времени между 1 и 3 сортировкой: " << (n3/n1)*(n3/n1) << ".\n";
+  std::cout << "Реальная разница во времени между 1 и 3 сортировкой: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(end3 - begin3) / std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1) << ".\n";
+
+  std::cout << "Тестирование сортировки слиянием. Предполагаемая сложность: O(nlog(n)).*************\n";
+  n1 = 10000;
+  n2 = 100000;
+  n3 = 1000000;
+  fillVector(testVec1, n1, -10000, 10000);
+  fillVector(testVec2, n2, -10000, 10000);
+  fillVector(testVec3, n3, -10000, 10000);
+  begin1 = std::chrono::steady_clock::now();
+  mergeIterativeSort(testVec1);
+  end1 = std::chrono::steady_clock::now();
+  begin2 = std::chrono::steady_clock::now();
+  mergeIterativeSort(testVec2);
+  end2 = std::chrono::steady_clock::now();
+  begin3 = std::chrono::steady_clock::now();
+  mergeIterativeSort(testVec3);
+  end3 = std::chrono::steady_clock::now();
+  std::cout << "Количество элементов 1: " << n1 << ".\n";
+  std::cout << "Время сортировки 1: " << std::chrono::duration_cast<std::chrono::seconds>(end1 - begin1).count() << " секунд.\n";
+  std::cout << "Время сортировки 1: " << std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1).count() << " микросекунд.\n";
+  std::cout << "Количество элементов 2: " << n2 << ".\n";
+  std::cout << "Время сортировки 2: " << std::chrono::duration_cast<std::chrono::seconds>(end2 - begin2).count() << " секунд.\n";
+  std::cout << "Время сортировки 2: " << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2).count() << " микросекунд.\n";
+  std::cout << "Количество элементов 3: " << n3 << ".\n";
+  std::cout << "Время сортировки 3: " << std::chrono::duration_cast<std::chrono::seconds>(end3 - begin3).count() << " секунд.\n";
+  std::cout << "Время сортировки 3: " << std::chrono::duration_cast<std::chrono::microseconds>(end3 - begin3).count() << " микросекунд.\n";
+  std::cout << "Ожидаемая разница во времени между 1 и 2 сортировкой: " << (n2/n1)*log10(n2/n1) << ".\n";
+  std::cout << "Реальная разница во времени между 1 и 2 сортировкой: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2) / std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1) << ".\n";
+  std::cout << "Ожидаемая разница во времени между 2 и 3 сортировкой: " << (n3/n2)*log10(n3/n2) << ".\n";
+  std::cout << "Реальная разница во времени между 2 и 3 сортировкой: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(end3 - begin3) / std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2) << ".\n";
+  std::cout << "Ожидаемая разница во времени между 1 и 3 сортировкой: " << (n3/n1)*log10(n3/n1) << ".\n";
+  std::cout << "Реальная разница во времени между 1 и 3 сортировкой: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(end3 - begin3) / std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1) << ".\n";
+
+  std::cout << "Тестирование Поразрядной сортировки. Предполагаемая сложность: O(n).*************\n";
+  n1 = 100000;
+  n2 = 1000000;
+  n3 = 10000000;
+  fillVector(testVec1, n1, -10000, 10000);
+  fillVector(testVec2, n2, -10000, 10000);
+  fillVector(testVec3, n3, -10000, 10000);
+  begin1 = std::chrono::steady_clock::now();
+  radixSort(testVec1);
+  end1 = std::chrono::steady_clock::now();
+  begin2 = std::chrono::steady_clock::now();
+  radixSort(testVec2);
+  end2 = std::chrono::steady_clock::now();
+  begin3 = std::chrono::steady_clock::now();
+  radixSort(testVec3);
+  end3 = std::chrono::steady_clock::now();
+  std::cout << "Количество элементов 1: " << n1 << ".\n";
+  std::cout << "Время сортировки 1: " << std::chrono::duration_cast<std::chrono::seconds>(end1 - begin1).count() << " секунд.\n";
+  std::cout << "Время сортировки 1: " << std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1).count() << " микросекунд.\n";
+  std::cout << "Количество элементов 2: " << n2 << ".\n";
+  std::cout << "Время сортировки 2: " << std::chrono::duration_cast<std::chrono::seconds>(end2 - begin2).count() << " секунд.\n";
+  std::cout << "Время сортировки 2: " << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2).count() << " микросекунд.\n";
+  std::cout << "Количество элементов 3: " << n3 << ".\n";
+  std::cout << "Время сортировки 3: " << std::chrono::duration_cast<std::chrono::seconds>(end3 - begin3).count() << " секунд.\n";
+  std::cout << "Время сортировки 3: " << std::chrono::duration_cast<std::chrono::microseconds>(end3 - begin3).count() << " микросекунд.\n";
+  std::cout << "Ожидаемая разница во времени между 1 и 2 сортировкой: " << (n2/n1) << ".\n";
+  std::cout << "Реальная разница во времени между 1 и 2 сортировкой: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2) / std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1) << ".\n";
+  std::cout << "Ожидаемая разница во времени между 2 и 3 сортировкой: " << (n3/n2) << ".\n";
+  std::cout << "Реальная разница во времени между 2 и 3 сортировкой: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(end3 - begin3) / std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2) << ".\n";
+  std::cout << "Ожидаемая разница во времени между 1 и 3 сортировкой: " << (n3/n1) << ".\n";
+  std::cout << "Реальная разница во времени между 1 и 3 сортировкой: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(end3 - begin3) / std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1) << ".\n";
+}

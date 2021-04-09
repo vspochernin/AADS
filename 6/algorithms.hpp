@@ -6,6 +6,9 @@ void fillVector(std::vector<int>& vec, size_t count, int min, int max); // За�
 void printVector(const std::vector<int>& vec, std::ostream& out); // Напечатать вектор в поток out.
 int power10(int power); // Получить десять в степени power.
 int getTheLongestNumberLength(const std::vector<int>& vec); // Длинна самого длинного числа в векторе.
+typedef void (*SortFunctionPointer) (std::vector<int>&); // Определения типа указателя на сортирующую функцию.
+void testSort(SortFunctionPointer sortFunction, bool isPrint = false); // Функция тестирования сортировки вектора, указатель на функцию подается в качестве параметра.
+void testSortComplex(); // Функция тестирования временной сложности сортировок.
 
 // Вспомогательные функции для сортировок.
 bool isVectorSorted(const std::vector<int>& vec); // Проверка, отсортирован ли вектор по неубыванию.
