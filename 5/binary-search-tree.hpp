@@ -6,7 +6,8 @@
 #include <iostream>
 #include <stack> // Для итеративного обхода дерева.
 #include <vector> // Для перегрузки оператора ==.
-#include <queue> // Для обхода в ширину
+#include "queue-array.hpp" // Для обхода в ширину.
+#include <memory> // shared_ptr.
 
 //
 // Определение шаблона класса BinarySearchTree.
@@ -525,21 +526,20 @@ private:
       return; // Пустое дерево никак не обойти.
     }
     Node<T>* topElem = nullptr; // Указатель на верхний элемент очереди.
-    std::queue<Node<T>*> nodeQueue; // Очередь, хранящая указатели на узлы.
-    nodeQueue.push(root_); // Сначала помещаем в неё корень.
-    while (!nodeQueue.empty())
+    std::shared_ptr<Queue<Node<T>*>> nodeQueue = std::make_shared<QueueArray<Node<T>*>>(this->getCount() + 1); // Очередь, хранящая указатели на узлы (с запасом).
+    nodeQueue->enQueue(root_); // Сначала помещаем в неё корень.
+    while (!nodeQueue->isEmpty())
     {
-      topElem = nodeQueue.front(); // Кладем в указатель на верхний элемент верхний элемент.
+      topElem = nodeQueue->deQueue(); // Кладем в указатель на верхний элемент верхний элемент.
       std::cout << topElem->key_; // Выводим его
       std::cout << ", ";
-      nodeQueue.pop();
       if (topElem->left_ != nullptr)
       {
-        nodeQueue.push(topElem->left_); // Заносим в очередь левого ребенка, если таковой есть.
+        nodeQueue->enQueue(topElem->left_); // Заносим в очередь левого ребенка, если таковой есть.
       }
       if (topElem->right_ != nullptr)
       {
-        nodeQueue.push(topElem->right_); // Заносим в очередь правого ребенка, если таковой есть.
+        nodeQueue->enQueue(topElem->right_); // Заносим в очередь правого ребенка, если таковой есть.
       }
     }
     std::cout << "\n";
