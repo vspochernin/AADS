@@ -13,13 +13,13 @@ public:
   //TODO:ВРЕМЕННОудалитьDoubleLinkedList(const DoubleLinkedList& src); // TODO: Возможно вообще удалить  // Конструктор "копирования" – создание копии имеющегося списка.
   //TODO:ВРЕМЕННОудалитьDoubleLinkedList(DoubleLinkedList&& src) noexcept; // Конструктор копирования с перемещением.
 
-  virtual ~DoubleLinkedList(); // Деструктор списка  
+  virtual ~DoubleLinkedList(); // Деструктор списка
 
   //TODO::ВРЕМЕННОудалитьDoubleLinkedList& operator=(const DoubleLinkedList& otherList); // Перегрузка оператора =.
   //TODO::ВРЕМЕННОудалитьDoubleLinkedList& operator=(DoubleLinkedList&& otherList) noexcept; // Перегрузка оператора = c перемещением.
   //TODO:ВРЕМЕННОудалитьDoubleLinkedList operator+(const DoubleLinkedList& otherList) const; // Перегрузка оператора +.
   //TODO:ВРЕМЕННОудалитьbool operator==(const DoubleLinkedList& otherList) const; // Перегрузка опретора ==.
-  friend std::ostream& operator<< (std::ostream& out, const DoubleLinkedList& list); // Перегрузка оператора <<. 
+  friend std::ostream& operator<< (std::ostream& out, const DoubleLinkedList& list); // Перегрузка оператора <<.
 
   int count()const; // TODO:Перенести{ return count_; }   // Количество элементов списка.
   int headItem() const; // Константный доступ к информации головного узла списка
@@ -33,13 +33,13 @@ public:
   bool deleteItem(const std::string& key); // Удаление узла с заданным ключом.  //TODO: удалил bool all = false
   bool searchItem(std::string key); // Поиск записи с заданным ключом.
   // TODO:удалитьbool replaceItem(size_t valueOld, size_t valueNew, bool all = false); // Замена информации узла на новое.
-  void outAll(); // Вывод элементов списка в текстовом виде в стандартный выходной поток 
+  void outAll(); // Вывод элементов списка в текстовом виде в стандартный выходной поток
   void clear();  // Очищение списка
   //TODO:ВРЕМЕННОудалитьvoid addArgument(DoubleLinkedList& otherList); // Перемещение списка аргумента в конец вызывающего.
   //TODO:ВРЕМЕННОудалитьvoid swap(DoubleLinkedList& otherList) noexcept; // Поменять местами два списка.
 
 private:
-  // Тип Node используется для описания элемента цепочки, связанного со 
+  // Тип Node используется для описания элемента цепочки, связанного со
   // следующим с помощью поля next_ и предшествующим с помощью поле prev_.
   struct Node
   {
@@ -48,8 +48,8 @@ private:
     Node* next_;      // Указатель на следующий элемент списка.
     Node* prev_;      // Указатель на предшествующий элемент списка.
 
-    // Конструктор для создания нового элемента списка. 
-    Node(std::string key, size_t value, Node* next = nullptr, Node* prev = nullptr): 
+    // Конструктор для создания нового элемента списка.
+    Node(std::string key, size_t value, Node* next = nullptr, Node* prev = nullptr):
       key_(key),
       value_(value),
       next_(next),

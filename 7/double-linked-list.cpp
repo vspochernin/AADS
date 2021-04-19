@@ -1,5 +1,5 @@
 ﻿#include "DoubleLinkedList.h"
-//  DoubleLinkedList.cpp - Дважды связный список целых чисел - реализация методов класса  
+//  DoubleLinkedList.cpp - Дважды связный список целых чисел - реализация методов класса
 
  // Конструктор "копирования" – создание копии имеющегося списка
 DoubleLinkedList::DoubleLinkedList(const DoubleLinkedList& src)
@@ -48,7 +48,7 @@ void DoubleLinkedList::insertTail(Node* x)
 
 // Вставить сформированный узел в начало списка
 void DoubleLinkedList::insertHead(Node* x)
-{   // x->prev_ == nullptr,  x->next_ == nullptr  
+{   // x->prev_ == nullptr,  x->next_ == nullptr
   x->next_ = head_;
   if (head_ != nullptr)
   {
@@ -64,7 +64,7 @@ void DoubleLinkedList::insertHead(Node* x)
   count_++;  // число элементов списка увеличилось
 }
 
-// Удаление заданного узла 
+// Удаление заданного узла
 void DoubleLinkedList::deleteNode(Node* x)
 {
   if (x == nullptr)
@@ -93,11 +93,11 @@ void DoubleLinkedList::deleteNode(Node* x)
     // удаляется хвост
     tail_ = x->prev_;
   }
-  delete x;      // 
+  delete x;      //
   count_--;     // число элементов списка уменьшилось
 }
 
-// Поиск узла (адрес) с заданным значением  
+// Поиск узла (адрес) с заданным значением
 DoubleLinkedList::Node* DoubleLinkedList::searchNode(int item)
 {
   Node* x = head_;
@@ -108,7 +108,7 @@ DoubleLinkedList::Node* DoubleLinkedList::searchNode(int item)
   return x;
 }
 
-// Замена информации узла на новое 
+// Замена информации узла на новое
 DoubleLinkedList::Node* DoubleLinkedList::replaceNode(DoubleLinkedList::Node* x, int item)
 {
   x->item_ = item;
@@ -157,14 +157,14 @@ int& DoubleLinkedList::tailItem()
 
 // Вставить элемент в голову списка
 void DoubleLinkedList::insertHead(int item)
-{   // создаем новый элемент списка и добавляем в голову 
+{   // создаем новый элемент списка и добавляем в голову
   insertHead(new Node(item));
 }
 
 
 // Вставить элемент в хвост списка
 void DoubleLinkedList::insertTail(int item)
-{   // создаем новый элемент списка и добавляем в хвост 
+{   // создаем новый элемент списка и добавляем в хвост
   insertTail(new Node(item));
 }
 
@@ -190,7 +190,7 @@ bool DoubleLinkedList::deleteTail()
   return 1;
 }
 
-// Удаление узла с заданным значением  
+// Удаление узла с заданным значением
 bool DoubleLinkedList::deleteItem(const int item, bool all)
 {
   bool check = false; // Удалился ли хоть один элемент?
@@ -233,14 +233,14 @@ bool DoubleLinkedList::deleteItem(const int item, bool all)
   return check;
 }
 
-// Поиск записи с заданным значением  
+// Поиск записи с заданным значением
 bool DoubleLinkedList::searchItem(int item)
-{   // возвращаем TRUE, если узел найден 
+{   // возвращаем TRUE, если узел найден
   return (searchNode(item) != nullptr);
 }
 
 
-// Замена информации узла на новое 
+// Замена информации узла на новое
 bool DoubleLinkedList::replaceItem(int itemOld, int itemNew, bool all)
 {
   bool check = false; // Изменился ли хоть один элемент?
@@ -272,7 +272,7 @@ bool DoubleLinkedList::replaceItem(int itemOld, int itemNew, bool all)
   return check;
 }
 
-// Вывод элементов списка в текстовом виде в стандартный выходной поток 
+// Вывод элементов списка в текстовом виде в стандартный выходной поток
 void DoubleLinkedList::outAll()
 {
   Node* current = head_;       // Указатель на элемент
@@ -300,7 +300,7 @@ void DoubleLinkedList::clear()
   count_ = 0;
 }
 
-// Деструктор списка	
+// Деструктор списка
 DoubleLinkedList::~DoubleLinkedList()
 {
   clear();
@@ -372,7 +372,7 @@ DoubleLinkedList& DoubleLinkedList::operator=(DoubleLinkedList&& otherList) noex
 DoubleLinkedList DoubleLinkedList::operator+(const DoubleLinkedList& otherList) const
 {
   DoubleLinkedList result;
-  
+
   Node* current = head_;
   while (current != nullptr)
   {
@@ -411,7 +411,7 @@ bool DoubleLinkedList::operator==(const DoubleLinkedList& otherList) const
   return true;
 }
 
-// Перегрузка оператора <<. 
+// Перегрузка оператора <<.
 std::ostream& operator<< (std::ostream& out, const DoubleLinkedList& list)
 {
   DoubleLinkedList::Node* current = list.head_;
