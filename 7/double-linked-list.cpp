@@ -11,7 +11,7 @@ DoubleLinkedList::~DoubleLinkedList()
   clear();
 }
 
-void DoubleLinkedList::insertItem(const std::string& key)
+bool DoubleLinkedList::insertItem(const std::string& key)
 {
   Node* current = head_; // Указатель на текущий элемент
   while (current != nullptr) // Если в списке уже есть элемент с таким ключем - просто увеличим его value_.
@@ -19,13 +19,27 @@ void DoubleLinkedList::insertItem(const std::string& key)
     if (current->key_ == key)
     {
       current->value_++;
-      return;
+      return false; // Добавления не было.
     }
     current = current->next_;
   }
   // Сейчас мы уверены в том, что в списке нет элемента с ключем key.
   // Поэтому просто добавим в список элемент с ключем key и значением 1.
   insertNode(new Node(key, 1));
+  return true; // Добавление было.
+}
+
+size_t DoubleLinkedList::searchItem(const std::string& key)
+{
+  Node* result = searchNode(key);
+  if (result == nullptr)
+  {
+    return 0;
+  }
+  else
+  {
+    return result->value_;
+  }
 }
 
 bool DoubleLinkedList::deleteItem(const std::string& key)
@@ -80,6 +94,16 @@ void DoubleLinkedList::insertNode(Node* x)
   }
   head_ = x; // Теперь x - первый элемент списка.
   count_++; // Число элементов списка увеличилось.
+}
+
+DoubleLinkedList::Node* DoubleLinkedList::searchNode(const std::string& key)
+{
+  Node* current = head_;
+  while ((current != nullptr) && (current->key_ != key))
+  {
+    current = current->next_;
+  }
+  return current;
 }
 
 void DoubleLinkedList::deleteNode(Node* x)

@@ -13,7 +13,8 @@ public:
   virtual ~DoubleLinkedList(); // Деструктор списка.
 
   size_t count() const; // Количество элементов списка.
-  void insertItem(const std::string& key); // Добавление узла с заданным ключом (или увеличение счетчика частотности).
+  bool insertItem(const std::string& key); // Добавление узла с заданным ключом (или увеличение счетчика частотности).
+  size_t searchItem(const std::string& key); // Поиска частоты вхождения слова key.
   bool deleteItem(const std::string& key); // Удаление узла с заданным ключом.
   void clear();  // Очищение списка
 
@@ -41,8 +42,8 @@ private:
   Node* tail_;        // Указатель на последний элемент списка.
 
   void insertNode(Node* x); // Вставить сформированный узел в список.
+  Node* searchNode(const std::string& key); // Поиск узла (адрес) с заданным значением ключа.
   void deleteNode(Node* x); // Удаление заданного узла.
-  Node* searchNode(std::string key); // Поиск узла (адрес) с заданным значением ключа.
 };
 
 #endif
