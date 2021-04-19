@@ -23,7 +23,7 @@ void FrequencyDictionary::insertWord(const std::string& str)
 {
   // Одновременно добавляем элемент в таблицу
   // и проверяем, а произошло ли добавление или просто увеличение счетчика.
-  if (data_[hashByDivision(str, size_)])
+  if (data_[hashByDivision(str, size_)].insertItem(str))
   {
     count_++;
   }
@@ -38,7 +38,7 @@ void FrequencyDictionary::deleteWord(const std::string& str)
 {
   // Одновременно производим попытку удаления
   // и уменьшение счетчика, если удаление произошло.
-  if (data_[hashByDivision(str, size_)])
+  if (data_[hashByDivision(str, size_)].deleteItem(str))
   {
     count_--;
   }

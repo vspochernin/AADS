@@ -3,6 +3,6 @@
 
 #include <string>
 
-size_t hashByDivision(const std::string& str); // Хеш-функция методом деления.
-
+size_t getCharCode(char ch); // Получение кода символа (с этим проблемы из-за разных кодировок).
+size_t hashByDivision(const std::string& str, size_t size); // Хеш-функция методом деления.
 #endif
