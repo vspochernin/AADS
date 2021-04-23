@@ -2,3 +2,5 @@
 .idea
 .depend
 app
+*.txt
+*.temp
