@@ -99,9 +99,9 @@ void DoubleLinkedList::insertNode(Node* x)
 DoubleLinkedList::Node* DoubleLinkedList::searchNode(const std::string& key)
 {
   Node* current = head_;
-  while ((current != nullptr) && (current->key_ != key))
+  while ((current != nullptr) && (current->key_ != key)) // Пока не прошли весь список или не нашли нужный узел...
   {
-    current = current->next_;
+    current = current->next_; // ...ищем дальше.
   }
   return current;
 }
