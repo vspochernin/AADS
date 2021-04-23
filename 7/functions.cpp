@@ -27,3 +27,106 @@ size_t hashByDivision(const std::string& str, size_t size)
   }
   return k % size; // Берем остаток от деления получившегося числа на размер хеш-таблицы.
 }
+
+bool isRussianLetter(char ch)
+{
+  size_t firstUpperCode = 192; // Код буквы 'А'.
+  size_t lastUpperCode = 223; // Код буквы 'Я'.
+  size_t firstLowerCode = 224; // Код буквы 'а'.
+  size_t lastLowerCode = 255; // Код буквы 'я'.
+  size_t code = getCharCode(ch); // Код подаваемой на вход буквы.
+  return (((code >= firstUpperCode) && (code <= lastUpperCode)) || ((code >= firstLowerCode) && (code <= lastLowerCode)));
+}
+
+bool isEnglishLetter(char ch)
+{
+  size_t firstUpperCode = 101; // Код буквы 'A'.
+  size_t lastUpperCode = 132; // Код буквы 'Z'.
+  size_t firstLowerCode = 141; // Код буквы 'a'.
+  size_t lastLowerCode = 172; // Код буквы 'z'.
+  size_t code = getCharCode(ch); // Код подаваемой на вход буквы.
+  return (((code >= firstUpperCode) && (code <= lastUpperCode)) || ((code >= firstLowerCode) && (code <= lastLowerCode)));
+}
+
+bool isWord(const std::string& str)
+{
+  if (str.empty())
+  {
+    return false; // Пустая строка - не слово.
+  }
+
+  bool isRussian = true; // true - слово русское, false - английское.
+  if (isRussianLetter(str[0]))
+  {
+    isRussian = true; // Первая буква русская => все слово должно быть русским.
+  }
+  else if (isEnglishLetter(str[0]))
+  {
+    isRussian = false; // Первая буква английская => все слово должно быть английским.
+  }
+  else
+  {
+    return false; // Если первая буква не прошла две предыдущие проверки, значит там не буква из алфавита.
+  }
+
+  // Проверка, чтобы все буквы слова были того же языка, что и первая.
+  // При этом, автоматически фильтруются лишние символы.
+  for (size_t i = 1; i < str.size(); i++)
+  {
+    if (isRussian)
+    {
+      if (!isRussianLetter(str[i]))
+      {
+        return false;
+      }
+    }
+    else
+    {
+      if (!isEnglishLetter(str[i]))
+      {
+        return false;
+      }
+    }
+  }
+
+  return true; // true - так как пройдены все проверки.
+}
+
+void toLower(std::string& str)
+{
+  if (!isWord(str)) // На вход должно поступать русское/английское слово.
+  {
+    throw ("Incorrect word!");
+  }
+
+  if (isRussianLetter(str[0])) // Если слово русское...
+  {
+    size_t firstUpperCode = 192; // Код буквы 'А'.
+    size_t lastUpperCode = 223; // Код буквы 'Я'.
+    size_t firstLowerCode = 224; // Код буквы 'а'.
+    for (size_t i = 0; i < str.size(); i++)
+    {
+      size_t code = getCharCode(str[i]);
+      if ((code >= firstUpperCode) && (code <= lastUpperCode))
+      {
+        // ...заменяем каждую заглавную русскую букву прописной.
+        str[i] = static_cast< char >(code + (firstLowerCode - firstUpperCode));
+      }
+    }
+  }
+  else // Если слово английское...
+  {
+    size_t firstUpperCode = 101; // Код буквы 'A'.
+    size_t lastUpperCode = 132; // Код буквы 'Z'.
+    size_t firstLowerCode = 141; // Код буквы 'a'.
+    for (size_t i = 0; i < str.size(); i ++)
+    {
+      size_t code = getCharCode(str[i]);
+      if ((code >= firstUpperCode) && (code <= lastUpperCode))
+      {
+        // ...заменяем каждую заглавную английскую букву прописной.
+        str[i] = static_cast< char >(code + (firstLowerCode - firstUpperCode));
+      }
+    }
+  }
+}
