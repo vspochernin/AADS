@@ -15,14 +15,14 @@ public:
 
   ~FrequencyDictionary();
 
-  void insertWord(const std::string& str);
-  size_t searchWord(const std::string& str);
-  void deleteWord(const std::string& str);
+  void insertWord(const std::string& str); // Добавление слова или увеличение счетчика его частотности.
+  size_t searchWord(const std::string& str); // Поиск слова (получаем значение - его частотность).
+  void deleteWord(const std::string& str); // Удаление слова.
 
 private:
-  size_t size_; // Размер массива двусвязных списков.
-  size_t count_; // Количество записей (слов).
-  DoubleLinkedList* data_; // Массив двусвязных списков.
+  size_t size_; // Размер массива двусвязных списков (размер хеш-таблицы).
+  size_t count_; // Количество записей (слов, записанных в хеш-таблицу).
+  DoubleLinkedList* data_; // Массив двусвязных списков (сама хеш-таблица).
 };
 
 #endif
