@@ -28,6 +28,22 @@ size_t hashByDivision(const std::string& str, size_t size)
   return k % size; // Берем остаток от деления получившегося числа на размер хеш-таблицы.
 }
 
+void clearWord(std::string& str)
+{
+  std::string::iterator i = str.begin();
+  while (i != str.end())
+  {
+    if (!(isRussianLetter(*i) || isEnglishLetter(*i))) // Если очередной символ - не буква...
+    {
+      i = str.erase(i); // ...удаляем его, присваивая итератору следующее положение.
+    }
+    else
+    {
+      i++; // Иначе просто передвигаем итератор вперед.
+    }
+  }
+}
+
 bool isRussianLetter(char ch)
 {
   size_t firstUpperCode = 192; // Код буквы 'А'.
@@ -40,10 +56,10 @@ bool isRussianLetter(char ch)
 
 bool isEnglishLetter(char ch)
 {
-  size_t firstUpperCode = 101; // Код буквы 'A'.
-  size_t lastUpperCode = 132; // Код буквы 'Z'.
-  size_t firstLowerCode = 141; // Код буквы 'a'.
-  size_t lastLowerCode = 172; // Код буквы 'z'.
+  size_t firstUpperCode = 65; // Код буквы 'A'.
+  size_t lastUpperCode = 90; // Код буквы 'Z'.
+  size_t firstLowerCode = 97; // Код буквы 'a'.
+  size_t lastLowerCode = 122; // Код буквы 'z'.
   size_t code = getCharCode(ch); // Код подаваемой на вход буквы.
   return (((code >= firstUpperCode) && (code <= lastUpperCode)) || ((code >= firstLowerCode) && (code <= lastLowerCode)));
 }
@@ -116,9 +132,9 @@ void toLower(std::string& str)
   }
   else // Если слово английское...
   {
-    size_t firstUpperCode = 101; // Код буквы 'A'.
-    size_t lastUpperCode = 132; // Код буквы 'Z'.
-    size_t firstLowerCode = 141; // Код буквы 'a'.
+    size_t firstUpperCode = 65; // Код буквы 'A'.
+    size_t lastUpperCode = 90; // Код буквы 'Z'.
+    size_t firstLowerCode = 97; // Код буквы 'a'.
     for (size_t i = 0; i < str.size(); i ++)
     {
       size_t code = getCharCode(str[i]);
