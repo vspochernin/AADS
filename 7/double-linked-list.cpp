@@ -83,6 +83,19 @@ void DoubleLinkedList::print(std::ostream& out)
   }
 }
 
+void DoubleLinkedList::fillVector(std::vector < std::pair< std::string, size_t > > &vec)
+{
+  Node* current = head_;
+  while (current != nullptr)
+  {
+    std::pair< std::string, size_t > pair;
+    pair.first = current->key_;
+    pair.second = current->value_;
+    vec.push_back(pair);
+    current = current->next_;
+  }
+}
+
 size_t DoubleLinkedList::count() const
 {
   return count_;

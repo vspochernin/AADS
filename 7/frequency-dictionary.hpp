@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 #include "double-linked-list.hpp"
 #include "functions.hpp"
@@ -21,6 +22,8 @@ public:
   void deleteWord(const std::string& str); // Удаление слова.
   void readFile(const std::string& fileName); // Прочитать слова из файла в хеш-таблицу.
   void printUnsorted(std::ostream& out); // Напечатать хеш-таблицу в out (в неосортированном виде).
+  void fillVector(std::vector< std::pair< std::string, size_t > >& vec); // Заполнить поступающий на вход вектор пар хеш-таблицей.
+  void printSorted(std::ostream& out); // Напечатать хеш-таблицу в out (в отсортированном виде).
 
 private:
   size_t size_; // Размер массива двусвязных списков (размер хеш-таблицы).

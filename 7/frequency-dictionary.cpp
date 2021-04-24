@@ -77,3 +77,23 @@ void FrequencyDictionary::printUnsorted(std::ostream& out)
   }
 }
 
+void FrequencyDictionary::fillVector(std::vector < std::pair< std::string, size_t > > &vec)
+{
+  vec.clear();
+  for (size_t i = 0; i < size_; i++)
+  {
+    data_[i].fillVector(vec);
+  }
+}
+
+void FrequencyDictionary::printSorted(std::ostream &out)
+{
+  std::vector< std::pair< std::string, size_t > > vec;
+  fillVector(vec);
+  quickSort(vec, 0, vec.size() - 1);
+  for (size_t i = 0; i < vec.size(); i++)
+  {
+    out << vec[i].first << ": " << vec[i].second << "\n";
+  }
+}
+

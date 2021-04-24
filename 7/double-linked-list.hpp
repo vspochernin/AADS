@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 // Дважды связный список пар ключ(слово) - значение(частота встречаемости слова).
 class DoubleLinkedList
@@ -18,6 +19,7 @@ public:
   bool deleteItem(const std::string& key); // Удаление узла с заданным ключом.
   void clear();  // Очищение списка
   void print(std::ostream& out); // Вывести содержимое списка в out.
+  void fillVector(std::vector< std::pair< std::string, size_t > >& vec); // Добавить к поступаемому на вход вектору пары из списка.
 
 private:
   // Тип Node используется для описания элемента цепочки, связанного со
