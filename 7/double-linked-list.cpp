@@ -73,6 +73,16 @@ void DoubleLinkedList::clear()
   tail_ = nullptr;
 }
 
+void DoubleLinkedList::print(std::ostream& out)
+{
+  Node* current = head_;
+  while (current != nullptr)
+  {
+    out << current->key_ <<": " << current->value_ << "\n";
+    current = current->next_;
+  }
+}
+
 size_t DoubleLinkedList::count() const
 {
   return count_;

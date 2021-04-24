@@ -17,6 +17,7 @@ public:
   size_t searchItem(const std::string& key); // Поиска частоты вхождения слова key.
   bool deleteItem(const std::string& key); // Удаление узла с заданным ключом.
   void clear();  // Очищение списка
+  void print(std::ostream& out); // Вывести содержимое списка в out.
 
 private:
   // Тип Node используется для описания элемента цепочки, связанного со
