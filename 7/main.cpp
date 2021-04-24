@@ -1,8 +1,15 @@
 #include <iostream>
+#include <fstream>
+#include <vector>
+
+#include "frequency-dictionary.hpp"
 
 int main()
 {
-  std::cout << "Hello world! I start doing 7.\n";
+  FrequencyDictionary test;
+  test.readFile("input.txt");
+  std::ofstream fout("output.txt");
+  test.printSorted(fout);
 
   return 0;
 }
