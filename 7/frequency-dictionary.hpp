@@ -2,6 +2,7 @@
 #define FREQUENCY_DICTIONARY_HPP
 
 #include <string>
+#include <iostream>
 
 #include "double-linked-list.hpp"
 #include "functions.hpp"
@@ -18,6 +19,8 @@ public:
   void insertWord(const std::string& str); // Добавление слова или увеличение счетчика его частотности.
   size_t searchWord(const std::string& str); // Поиск слова (получаем значение - его частотность).
   void deleteWord(const std::string& str); // Удаление слова.
+  void readFile(const std::string& fileName); // Прочитать слова из файла в хеш-таблицу.
+  void printUnsorted(std::ostream& out); // Напечатать хеш-таблицу в out (в неосортированном виде).
 
 private:
   size_t size_; // Размер массива двусвязных списков (размер хеш-таблицы).

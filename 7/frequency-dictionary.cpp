@@ -1,5 +1,7 @@
 #include "frequency-dictionary.hpp"
 
+#include <fstream>
+
 const size_t defaultSize = 1511; // Рандомное простое число.
 
 FrequencyDictionary::FrequencyDictionary():
@@ -43,6 +45,35 @@ void FrequencyDictionary::deleteWord(const std::string& str)
   if (data_[hashByDivision(str, size_)].deleteItem(str))
   {
     count_--;
+  }
+}
+
+void FrequencyDictionary::readFile(const std::string& fileName)
+{
+  std::ifstream fin(fileName);
+  if (!fin)
+  {
+    throw("File open error!");
+  }
+
+  std::string str = "";
+  while (!fin.eof())
+  {
+    fin >> str; // Считываем очередную строку из файла.
+    clearWord(str); // Очищаем строку от не букв.
+    if (isWord(str)) // Проверяем строку на соответствие слову.
+    {
+      toLower(str); // Переводим её в нижний регистр.
+      insertWord(str); // Записываем её в хеш-таблицу (или увеличиваем счетчик).
+    }
+  }
+}
+
+void FrequencyDictionary::printUnsorted(std::ostream& out)
+{
+  for (size_t i = 0; i < size_; i++)
+  {
+    data_[i].print(out);
   }
 }
 
