@@ -20,6 +20,7 @@ public:
   void clear();  // Очищение списка
   void print(std::ostream& out); // Вывести содержимое списка в out.
   void fillVector(std::vector< std::pair< std::string, size_t > >& vec); // Добавить к поступаемому на вход вектору пары из списка.
+  void fillThreeMost(std::vector< std::pair< std::string, size_t > >& vec); // Заполнить вектор трех чаще всего встречающихся слов.
 
 private:
   // Тип Node используется для описания элемента цепочки, связанного со

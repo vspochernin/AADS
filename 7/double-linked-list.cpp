@@ -96,6 +96,38 @@ void DoubleLinkedList::fillVector(std::vector < std::pair< std::string, size_t >
   }
 }
 
+void DoubleLinkedList::fillThreeMost(std::vector< std::pair< std::string, size_t > >& vec)
+{
+  if (vec.size() != 3)
+  {
+    throw (std::invalid_argument("Некорректный размер подаваемого вектора!"));
+  }
+
+  Node* current = head_;
+  while (current != nullptr)
+  {
+    std::pair< std::string, size_t > pair;
+    pair.first = current->key_;
+    pair.second = current->value_;
+    if (pair.second > vec[0].second)
+    {
+      vec[2] = vec[1];
+      vec[1] = vec[0];
+      vec[0] = pair;
+    }
+    else if (pair.second > vec[1].second)
+    {
+      vec[2] = vec[1];
+      vec[1] = pair;
+    }
+    else if (pair.second > vec[2].second)
+    {
+      vec[2] = pair;
+    }
+    current = current->next_;
+  }
+}
+
 size_t DoubleLinkedList::count() const
 {
   return count_;

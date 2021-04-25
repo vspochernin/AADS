@@ -109,3 +109,31 @@ void FrequencyDictionary::printSorted(std::ostream &out)
   }
 }
 
+std::vector< std::pair< std::string, size_t > > FrequencyDictionary::getThreeMost()
+{
+  std::vector< std::pair< std::string, size_t > > vec;
+  std::pair< std::string, size_t > emptyPair;
+  emptyPair.first = "";
+  emptyPair.second = 0;
+  for (size_t i = 0; i < 3; i++)
+  {
+    vec.push_back(emptyPair);
+  }
+
+  for (size_t i = 0; i < size_; i++)
+  {
+    data_[i].fillThreeMost(vec);
+  }
+
+  return vec;
+}
+
+void FrequencyDictionary::printThreeMost(std::ostream& out)
+{
+  std::vector< std::pair< std::string, size_t > > vec = getThreeMost();
+  for (size_t i = 0; i < vec.size(); i++)
+  {
+    out << vec[i].first << ": " << vec[i].second << "\n";
+  }
+}
+
