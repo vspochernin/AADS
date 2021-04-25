@@ -1,6 +1,7 @@
 #include "frequency-dictionary.hpp"
 
 #include <fstream>
+#include <exception>
 
 const size_t defaultSize = 1511; // Рандомное простое число.
 
@@ -23,11 +24,22 @@ FrequencyDictionary::~FrequencyDictionary()
 
 void FrequencyDictionary::insertWord(const std::string& str)
 {
-  // Одновременно добавляем элемент в таблицу
-  // и проверяем, произошло добавление или просто увеличение счетчика.
-  if (data_[hashByDivision(str, size_)].insertItem(str))
+  std::string word = str; // Слово, которое непосредственно будем добавлять.
+  clearWord(word); // Очищаем слово от не букв.
+
+  if (isWord(word)) // Проверяем на соответствие слову.
   {
-    count_++;
+    toLower(word); // Переводим слово в нижний регистр.
+    // Одновременно добавляем элемент в таблицу
+    // и проверяем, произошло добавление или просто увеличение счетчика.
+    if (data_[hashByDivision(str, size_)].insertItem(str))
+    {
+      count_++;
+    }
+  }
+  else
+  {
+    throw (std::invalid_argument("Некооректное слово при добавлении!"));
   }
 }
 
@@ -53,19 +65,19 @@ void FrequencyDictionary::readFile(const std::string& fileName)
   std::ifstream fin(fileName);
   if (!fin)
   {
-    throw("File open error!");
+    throw(std::runtime_error("Ошибка открытия файла!"));
   }
 
   std::string str = "";
   while (!fin.eof())
   {
     fin >> str; // Считываем очередную строку из файла.
-    clearWord(str); // Очищаем строку от не букв.
-    if (isWord(str)) // Проверяем строку на соответствие слову.
+    try
     {
-      toLower(str); // Переводим её в нижний регистр.
-      insertWord(str); // Записываем её в хеш-таблицу (или увеличиваем счетчик).
+      insertWord(str);
     }
+    catch (const std::invalid_argument & error)
+    {}
   }
 }
 
