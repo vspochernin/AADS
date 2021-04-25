@@ -15,4 +15,9 @@ void toLower(std::string& str); // Переводит слово в нижний
 
 void quickSort(std::vector< std::pair< std::string, size_t > >& vec, int l, int r); // Быстрая сортировка вектора пар.
 
+void startProgram(); // Функция выполнения основной программы.
+void showHelp(); // Вывести список команд
+
+void testProgram(); // Функция выполнения тестов.
+
 #endif
