@@ -32,7 +32,7 @@ void FrequencyDictionary::insertWord(const std::string& str)
     toLower(word); // Переводим слово в нижний регистр.
     // Одновременно добавляем элемент в таблицу
     // и проверяем, произошло добавление или просто увеличение счетчика.
-    if (data_[hashByDivision(str, size_)].insertItem(str))
+    if (data_[hashByDivision(word, size_)].insertItem(word))
     {
       count_++;
     }
