@@ -243,6 +243,10 @@ void startProgram()
       {
         doWriteFile(dictionary);
       }
+      else if (input == "clear")
+      {
+        doClear(dictionary);
+      }
       else if (input == "exit")
       {
         break;
@@ -271,6 +275,7 @@ void showHelp()
             << "\"readFile\" - добавить все слова из файла\n"
             << "\"printThreeMost\" - вывести три чаще всего встречающихся слова\n"
             << "\"writeFile\" - записать в файл слова по убыванию их встречаемости\n"
+            << "\"clear\" - очистить словарь\n"
             << "------------------------------------------------------\n";
 }
 
@@ -363,10 +368,17 @@ void doWriteFile(const FrequencyDictionary& dictionary)
   dictionary.printSorted(fout);
 }
 
+void doClear(FrequencyDictionary& dictionary)
+{
+  std::cout << "Очищение словаря.\n";
+  dictionary.clear();
+}
+
 void testProgram()
 {
   doDoubleLinkedListTest();
   doFunctionsTest();
+  doFrequencyDictionaryTest();
 }
 
 void doDoubleLinkedListTest()
@@ -735,6 +747,122 @@ void doFunctionsTest()
   quickSort(vec, 0, vec.size() - 1);
   std::cout << "Худший случай после сортировки:\n";
   printVector(vec, std::cout);
+  std::cout << "-------------------------------------------------------\n";
+  std::cout << "------------------------------------------------------------------------------------------------------\n";
+}
+
+void doFrequencyDictionaryTest()
+{
+  std::cout << "---------------------------------ТЕСТИРОВАНИЕ ЧАСТОТНОГО СЛОВАРЯ--------------------------------------\n";
+  std::cout << "Перед началом тестов хочу отметить, что функции fillVector() и getThreeMost()\n"
+            << "тестируются неявно, так как они являются ключевыми в printSorted() и printThreeMost().\n";
+  std::cout << "------------ТЕСТ 1: таблица с нулевым размером--------\n";
+  try
+  {
+    FrequencyDictionary zeroSizedDictionary(0);
+  }
+  catch(const std::exception& error)
+  {
+    std::cout << error.what() << "\n";
+  }
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "------------ТЕСТ 2: ПУСТОЙ СЛОВАРЬ---------------------\n";
+  FrequencyDictionary dictionary;
+  std::cout << "Размер пустого словаря: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в пустом словаре: " << dictionary.count() << "\n";
+  std::cout << "Пустой словарь в неотсортированном виде:\n";
+  dictionary.printUnsorted(std::cout);
+  std::cout << "Пустой словарь в отсортированном виде:\n";
+  dictionary.printSorted(std::cout);
+  std::cout << "Три чаще всего встречающихся слова пустого словаря:\n";
+  dictionary.printThreeMost(std::cout);
+
+  std::cout << "Слово \"test\" встречается в списке " << dictionary.searchWord("test") << " раз.\n";
+
+  std::cout << "Удаление слова \"test\": " << (dictionary.deleteWord("test") ? "произошло." : "не произошло.") << "\n";
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "------------ТЕСТ 3: ДОБАВЛЕНИЕ, ВЫВОД И ПОИСК----------\n";
+  std::cout << "Вручную я буду добавлять только английские слова из-за кодировки IDE.\n";
+  dictionary.insertWord("test");
+  dictionary.insertWord("test");
+  dictionary.insertWord("student");
+  dictionary.insertWord("student");
+  dictionary.insertWord("student");
+  dictionary.insertWord("student");
+  dictionary.insertWord("teacher");
+  dictionary.insertWord("teacher");
+  dictionary.insertWord("teacher");
+  dictionary.insertWord("teacher");
+  dictionary.insertWord("teacher");
+  dictionary.insertWord("deadline");
+  std::cout << "Размер словаря: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре: " << dictionary.count() << "\n";
+  std::cout << "Словарь в неотсортированном виде:\n";
+  dictionary.printUnsorted(std::cout);
+  std::cout << "Словарь в отсортированном виде:\n";
+  dictionary.printSorted(std::cout);
+  std::cout << "Три чаще всего встречающихся слова:\n";
+  dictionary.printThreeMost(std::cout);
+  std::cout << "Слово \"test\" встречается в списке " << dictionary.searchWord("test") << " раз.\n";
+  std::cout << "Слово \"teacher\" встречается в списке " << dictionary.searchWord("teacher") << " раз.\n";
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "------------ТЕСТ 4: УДАЛЕНИЕ СЛОВ----------------------\n";
+  std::cout << "Размер словаря до удаления: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре до удаления: " << dictionary.count() << "\n";
+  std::cout << "Словарь в отсортированном виде до удаления:\n";
+  dictionary.printSorted(std::cout);
+
+  std::cout << "Слово \"test\" встречается в списке " << dictionary.searchWord("test") << " раз.\n";
+  std::cout << "Удаление слова \"test\": " << (dictionary.deleteWord("test") ? "произошло." : "не произошло.") << "\n";
+  std::cout << "Удаление слова \"deadline\": " << (dictionary.deleteWord("deadline") ? "произошло." : "не произошло.") << "\n";
+  std::cout << "Слово \"test\" встречается в списке " << dictionary.searchWord("test") << " раз.\n";
+
+  std::cout << "Словарь в отсортированном виде после удаления:\n";
+  dictionary.printSorted(std::cout);
+  std::cout << "Удаление слова \"student\": " << (dictionary.deleteWord("student") ? "произошло." : "не произошло.") << "\n";
+  std::cout << "Удаление слова \"teacher\": " << (dictionary.deleteWord("teacher") ? "произошло." : "не произошло.") << "\n";
+  std::cout << "Словарь в отсортированном виде после удаления:\n";
+  dictionary.printSorted(std::cout);
+  std::cout << "Размер словаря после удаления: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре после удаления: " << dictionary.count() << "\n";
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "------------ТЕСТ 5: ЧТЕНИЕ ФАЙЛА----------------------\n";
+  std::cout << "В качестве примера будет прочитана первая глава Капитанской дочки Пушкина.\n";
+  std::cout << "Скорее всего, тесты будут запускаться на linux терминале, где не видна кодировка русских слов словаря.\n";
+  std::cout << "В связи с этим на консоль я выведу только три чаще всего встречающихся слова, "
+            << "а весь словарь в отсортированном виде выведу в файл sampleOutput.txt.\n";
+  dictionary.readFile("sampleInput.txt");
+  std::cout << "Размер словаря: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре: " << dictionary.count() << "\n";
+  std::cout << "Три чаще всего встречающихся слова:\n";
+  dictionary.printThreeMost(std::cout);
+  std::ofstream fout("sampleOutput.txt");
+  dictionary.printSorted(fout);
+  fout.close();
+  std::cout << "Словарь в отсортированном виде напечатан в файл sampleOutput.txt\n";
+
+  std::cout << "Теперь проверим возникновение исключения при попытке открыть несуществующий файл.\n";
+  try
+  {
+    dictionary.readFile("awdadadwa.awdawdadaw");
+  }
+  catch(const std::exception& error)
+  {
+    std::cout << error.what() << "\n";
+  }
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "------------ТЕСТ 6: ОЧИЩЕНИЕ СЛОВАРЯ-------------------\n";
+  std::cout << "Размер словаря до очищения: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре до очищения: " << dictionary.count() << "\n";
+  std::cout << "Очищение словаря.\n";
+  dictionary.clear();
+  std::cout << "Размер словаря после очищения: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре после очищения: " << dictionary.count() << "\n";
   std::cout << "-------------------------------------------------------\n";
   std::cout << "------------------------------------------------------------------------------------------------------\n";
 }

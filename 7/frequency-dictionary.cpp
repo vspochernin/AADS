@@ -3,19 +3,24 @@
 #include <fstream>
 #include <exception>
 
-const size_t defaultSize = 1511; // Рандомное простое число.
+const size_t DEFAULT_SIZE = 1511; // Рандомное простое число.
 
 FrequencyDictionary::FrequencyDictionary():
-  size_(defaultSize),
+  size_(DEFAULT_SIZE),
   count_(0),
-  data_(new DoubleLinkedList[defaultSize])
+  data_(new DoubleLinkedList[DEFAULT_SIZE])
 {}
 
-FrequencyDictionary::FrequencyDictionary(size_t size):
-  size_(size),
-  count_(0),
-  data_(new DoubleLinkedList[size])
-{}
+FrequencyDictionary::FrequencyDictionary(size_t size)
+{
+  if (size == 0)
+  {
+    throw (std::invalid_argument("Размер хеш таблицы должен быть положительным числом!"));
+  }
+  size_ = size;
+  count_ = 0;
+  data_ = new DoubleLinkedList[size];
+}
 
 FrequencyDictionary::~FrequencyDictionary()
 {
@@ -150,5 +155,24 @@ void FrequencyDictionary::printThreeMost(std::ostream& out) const
   {
     out << vec[i].first << ": " << vec[i].second << "\n";
   }
+}
+
+void FrequencyDictionary::clear()
+{
+  for (size_t i = 0; i < size_; i++)
+  {
+    data_[i].clear(); // Очищаем каждый двусвязный список хеш-таблицы.
+  }
+  count_ = 0;
+}
+
+size_t FrequencyDictionary::size()
+{
+  return size_;
+}
+
+size_t FrequencyDictionary::count()
+{
+  return count_;
 }
 

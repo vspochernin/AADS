@@ -26,9 +26,11 @@ void doDelete(FrequencyDictionary& dictionary); // Удалить слово.
 void doReadFile(FrequencyDictionary& dictionary); // Добавить слова из файла.
 void doPrintThreeMost(const FrequencyDictionary& dictionary); // Напечатать три чаще всего встречающихся слова.
 void doWriteFile(const FrequencyDictionary& dictionary); // Записать в файл слова по убыванию их встречаемости.
+void doClear(FrequencyDictionary& dictionary); // Очистить словарь.
 
 void testProgram(); // Функция выполнения тестов.
 void doDoubleLinkedListTest(); // Тестирование двусвязного списка.
 void doFunctionsTest(); // Тестирование вспомогательных функций.
+void doFrequencyDictionaryTest(); // Тестирование частотного словаря.
 
 #endif
