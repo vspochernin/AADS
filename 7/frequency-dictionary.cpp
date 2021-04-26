@@ -25,8 +25,6 @@ FrequencyDictionary::~FrequencyDictionary()
 void FrequencyDictionary::insertWord(const std::string& str)
 {
   std::string word = str; // Слово, которое непосредственно будем добавлять.
-  clearWord(word); // Очищаем слово от не букв.
-
   if (isWord(word)) // Проверяем на соответствие слову.
   {
     toLower(word); // Переводим слово в нижний регистр.
@@ -43,21 +41,37 @@ void FrequencyDictionary::insertWord(const std::string& str)
   }
 }
 
-size_t FrequencyDictionary::searchWord(const std::string& str)
+size_t FrequencyDictionary::searchWord(const std::string& str) const
 {
-  // Ищем значение по ключу str в сответствующем двусвязном списке.
-  // Если слова в хеш таблице нет - просто получим 0.
-  return data_[hashByDivision(str, size_)].searchItem(str);
+  if (isWord(str))
+  {
+    // Ищем значение по ключу str в сответствующем двусвязном списке.
+    // Если слова в хеш таблице нет - просто получим 0.
+    return data_[hashByDivision(str, size_)].searchItem(str);
+  }
+  else
+  {
+    throw(std::invalid_argument("Некорректное слово при поиске!"));
+  }
 }
 
-void FrequencyDictionary::deleteWord(const std::string& str)
+bool FrequencyDictionary::deleteWord(const std::string& str)
 {
-  // Одновременно производим попытку удаления
-  // и уменьшение счетчика, если удаление произошло.
-  if (data_[hashByDivision(str, size_)].deleteItem(str))
+  if (isWord(str))
   {
-    count_--;
+    // Одновременно производим попытку удаления
+    // и уменьшение счетчика, если удаление произошло.
+    if (data_[hashByDivision(str, size_)].deleteItem(str))
+    {
+      count_--;
+      return true;
+    }
   }
+  else
+  {
+    throw(std::invalid_argument("Некорректное слово при удалении!"));
+  }
+  return false;
 }
 
 void FrequencyDictionary::readFile(const std::string& fileName)
@@ -72,16 +86,17 @@ void FrequencyDictionary::readFile(const std::string& fileName)
   while (!fin.eof())
   {
     fin >> str; // Считываем очередную строку из файла.
+    clearWord(str); // Очищаем строку от не букв.
     try
     {
       insertWord(str);
     }
-    catch (const std::invalid_argument & error)
+    catch (const std::invalid_argument& error)
     {}
   }
 }
 
-void FrequencyDictionary::printUnsorted(std::ostream& out)
+void FrequencyDictionary::printUnsorted(std::ostream& out) const
 {
   for (size_t i = 0; i < size_; i++)
   {
@@ -89,7 +104,7 @@ void FrequencyDictionary::printUnsorted(std::ostream& out)
   }
 }
 
-void FrequencyDictionary::fillVector(std::vector < std::pair< std::string, size_t > > &vec)
+void FrequencyDictionary::fillVector(std::vector < std::pair< std::string, size_t > > &vec) const
 {
   vec.clear();
   for (size_t i = 0; i < size_; i++)
@@ -98,7 +113,7 @@ void FrequencyDictionary::fillVector(std::vector < std::pair< std::string, size_
   }
 }
 
-void FrequencyDictionary::printSorted(std::ostream &out)
+void FrequencyDictionary::printSorted(std::ostream &out) const
 {
   std::vector< std::pair< std::string, size_t > > vec;
   fillVector(vec);
@@ -109,7 +124,7 @@ void FrequencyDictionary::printSorted(std::ostream &out)
   }
 }
 
-std::vector< std::pair< std::string, size_t > > FrequencyDictionary::getThreeMost()
+std::vector< std::pair< std::string, size_t > > FrequencyDictionary::getThreeMost() const
 {
   std::vector< std::pair< std::string, size_t > > vec;
   std::pair< std::string, size_t > emptyPair;
@@ -128,7 +143,7 @@ std::vector< std::pair< std::string, size_t > > FrequencyDictionary::getThreeMos
   return vec;
 }
 
-void FrequencyDictionary::printThreeMost(std::ostream& out)
+void FrequencyDictionary::printThreeMost(std::ostream& out) const
 {
   std::vector< std::pair< std::string, size_t > > vec = getThreeMost();
   for (size_t i = 0; i < vec.size(); i++)
