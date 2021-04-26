@@ -1,8 +1,9 @@
 #include "functions.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <ctime>
 #include <iostream>
+#include <fstream>
 
 size_t getCharCode(char ch)
 {
@@ -180,6 +181,7 @@ void quickSort(std::vector< std::pair< std::string, size_t > >& vec, int l, int 
 
 void startProgram()
 {
+  FrequencyDictionary dictionary;
   std::cout << "------------------------------------------------------\n"
             << "Началось выполнение программы\n"
             << "\"help\" - посмотреть полный список команд\n"
@@ -188,18 +190,49 @@ void startProgram()
   std::string input = "";
   while (true)
   {
-    std::cin >> input;
-    if (input == "help")
+    try
     {
-      showHelp();
+      std::cin >> input;
+      if (input == "help")
+      {
+        showHelp();
+      }
+      else if (input == "insert")
+      {
+        doInsert(dictionary);
+      }
+      else if (input == "search")
+      {
+        doSearch(dictionary);
+      }
+      else if (input == "delete")
+      {
+        doDelete(dictionary);
+      }
+      else if (input == "readFile")
+      {
+        doReadFile(dictionary);
+      }
+      else if (input == "printThreeMost")
+      {
+        doPrintThreeMost(dictionary);
+      }
+      else if (input == "writeFile")
+      {
+        doWriteFile(dictionary);
+      }
+      else if (input == "exit")
+      {
+        break;
+      }
+      else
+      {
+        std::cout << "Некорректная команда. Введите команду заново.\n";
+      }
     }
-    else if (input == "exit")
+    catch (const std::exception& error)
     {
-      break;
-    }
-    else
-    {
-      std::cout << "Некорректная команда, попробуйте еще раз.\n";
+      std::cout << error.what() << "\n" << "Введите команду заново.\n";
     }
   }
 }
@@ -217,6 +250,95 @@ void showHelp()
             << "\"printThreeMost\" - вывести три чаще всего встречающихся слова\n"
             << "\"writeFile\" - записать в файл слова по убыванию их встречаемости\n"
             << "------------------------------------------------------\n";
+}
+
+void doInsert(FrequencyDictionary& dictionary)
+{
+  std::string str;
+  std::cout << "Введите слово, которое хотите добавить\n";
+  std::cin >> str;
+  if (std::cin.fail() || std::cin.peek() != 10)
+  {
+    std::cin.clear();
+    std::cin.ignore(32767, '\n');
+    throw (std::invalid_argument("Некорректная строка! Нужно ввести одно слово."));
+  }
+  dictionary.insertWord(str);
+}
+
+void doSearch(const FrequencyDictionary& dictionary)
+{
+  std::string str;
+  std::cout << "Введите слово, которое хотите найти\n";
+  std::cin >> str;
+  if (std::cin.fail() || std::cin.peek() != 10)
+  {
+    std::cin.clear();
+    std::cin.ignore(32767, '\n');
+    throw (std::invalid_argument("Некорректная строка! Нужно ввести одно слово."));
+  }
+  size_t count = dictionary.searchWord(str);
+  std::cout << "Слово \"" << str << "\" встречается " << count << " раз.\n";
+}
+
+void doDelete(FrequencyDictionary& dictionary)
+{
+  std::string str;
+  std::cout << "Введите слово, которое хотите удалить\n";
+  std::cin >> str;
+  if (std::cin.fail() || std::cin.peek() != 10)
+  {
+    std::cin.clear();
+    std::cin.ignore(32767, '\n');
+    throw (std::invalid_argument("Некорректная строка! Нужно ввести одно слово."));
+  }
+  if (dictionary.deleteWord(str))
+  {
+    std::cout << "Слово успешно удалено.\n";
+  }
+  else
+  {
+    std::cout << "Удаление не произошло, слова не было.\n";
+  }
+}
+
+void doReadFile(FrequencyDictionary& dictionary)
+{
+  std::string str;
+  std::cout << "Введите имя файла, который хотите прочитать\n";
+  std::cin >> str;
+  if (std::cin.fail() || std::cin.peek() != 10)
+  {
+    std::cin.clear();
+    std::cin.ignore(32767, '\n');
+    throw (std::invalid_argument("Некорректная строка! Нужно ввести только имя файла."));
+  }
+  dictionary.readFile(str);
+}
+
+void doPrintThreeMost(const FrequencyDictionary& dictionary)
+{
+  std::cout << "Три чаще всего встречающихся слова:\n";
+  dictionary.printThreeMost(std::cout);
+}
+
+void doWriteFile(const FrequencyDictionary& dictionary)
+{
+  std::string str;
+  std::cout << "Введите имя файла, в который хотите записать\n";
+  std::cin >> str;
+  if (std::cin.fail() || std::cin.peek() != 10)
+  {
+    std::cin.clear();
+    std::cin.ignore(32767, '\n');
+    throw (std::invalid_argument("Некорректная строка! Нужно ввести только имя файла."));
+  }
+  std::ofstream fout(str);
+  if (!fout)
+  {
+    throw(std::runtime_error("Ошибка открытия файла!"));
+  }
+  dictionary.printSorted(fout);
 }
 
 void testProgram()
