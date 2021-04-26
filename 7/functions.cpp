@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 #include "frequency-dictionary.hpp"
 
@@ -35,8 +36,8 @@ size_t hashByDivision(const std::string& str, size_t size)
 
 void clearWord(std::string& str)
 {
-  std::string::iterator i = str.begin();
-  while (i != str.end())
+  std::string::iterator i = str.begin(); // Итератор на начала слова.
+  while (i != str.end()) // Пока мы не дошли до конца слова...
   {
     if (!(isRussianLetter(*i) || isEnglishLetter(*i))) // Если очередной символ - не буква...
     {
@@ -55,8 +56,13 @@ bool isRussianLetter(char ch)
   size_t lastUpperCode = 223; // Код буквы 'Я'.
   size_t firstLowerCode = 224; // Код буквы 'а'.
   size_t lastLowerCode = 255; // Код буквы 'я'.
+  size_t additionalUpperCode = 168; // Код буквы 'Ё'.
+  size_t additionalLowerCode = 184; // Код буквы 'ё'.
   size_t code = getCharCode(ch); // Код подаваемой на вход буквы.
-  return (((code >= firstUpperCode) && (code <= lastUpperCode)) || ((code >= firstLowerCode) && (code <= lastLowerCode)));
+  return (((code >= firstUpperCode) && (code <= lastUpperCode)) ||
+          ((code >= firstLowerCode) && (code <= lastLowerCode)) ||
+          (code == additionalUpperCode) ||
+          (code == additionalLowerCode));
 }
 
 bool isEnglishLetter(char ch)
@@ -117,7 +123,7 @@ void toLower(std::string& str)
 {
   if (!isWord(str)) // На вход должно поступать русское/английское слово.
   {
-    throw ("Incorrect word!");
+    throw (std::invalid_argument("На вход поступило не слово!"));
   }
 
   if (isRussianLetter(str[0])) // Если слово русское...
@@ -125,6 +131,8 @@ void toLower(std::string& str)
     size_t firstUpperCode = 192; // Код буквы 'А'.
     size_t lastUpperCode = 223; // Код буквы 'Я'.
     size_t firstLowerCode = 224; // Код буквы 'а'.
+    size_t additionalUpperCode = 168; // Код буквы 'Ё'.
+    size_t additionalLowerCode = 184; // Код буквы 'ё'.
     for (size_t i = 0; i < str.size(); i++)
     {
       size_t code = getCharCode(str[i]);
@@ -132,6 +140,10 @@ void toLower(std::string& str)
       {
         // ...заменяем каждую заглавную русскую букву прописной.
         str[i] = static_cast< char >(code + (firstLowerCode - firstUpperCode));
+      }
+      else if (code == additionalUpperCode) // Не забываем про букву 'Ё'.
+      {
+        str[i] = static_cast < char >(additionalLowerCode);
       }
     }
   }
@@ -354,6 +366,7 @@ void doWriteFile(const FrequencyDictionary& dictionary)
 void testProgram()
 {
   doDoubleLinkedListTest();
+  doFunctionsTest();
 }
 
 void doDoubleLinkedListTest()
@@ -461,4 +474,267 @@ void doDoubleLinkedListTest()
   list.print(std::cout);
   std::cout << "-------------------------------------------------------\n";
   std::cout << "-------------------------------------------------------------------------------------------------\n";
+}
+
+void doFunctionsTest()
+{
+  std::cout << "---------------------------------ТЕСТИРОВАНИЕ ВСПОМОГАТЕЛЬНЫХ ФУНКЦИЙ---------------------------------\n";
+  std::cout << "----------------ТЕСТ 1: getCharCode()-----------------\n";
+  std::ifstream finRussianLetters("russianLetters.txt"); // Берём их из файла, потому что должна быть другая кодировка (в IDE UTF-8).
+  std::string russianLetters = "";
+  finRussianLetters >> russianLetters;
+  finRussianLetters.close();
+  std::string englishLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  std::string randomSymbols = "!@#$%^&*()_-+=";
+
+  std::cout << "Русские буквы:\n";
+  for (size_t i = 0; i < russianLetters.size(); i++)
+  {
+    std::cout << russianLetters[i] << ": " << std::setw(4) << getCharCode(russianLetters[i]) << ", ";
+    if ((i != 0) && (i % 7 == 0))
+    {
+      std::cout << "\n";
+    }
+  }
+
+  std::cout << "Английские буквы:\n";
+  for (size_t i = 0; i < englishLetters.size(); i++)
+  {
+    std::cout << englishLetters[i] << ": " << std::setw(4) << getCharCode(englishLetters[i]) << ", ";
+    if ((i != 0) && (i % 7 == 0))
+    {
+      std::cout << "\n";
+    }
+  }
+
+  std::cout << "Случайные символы:\n";
+  for (size_t i = 0; i < randomSymbols.size(); i++)
+  {
+    std::cout << randomSymbols[i] << ": " << std::setw(4) << getCharCode(randomSymbols[i]) << ", ";
+    if ((i != 0) && (i % 7 == 0))
+    {
+      std::cout << "\n";
+    }
+  }
+  std::cout << "\n";
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "----------------ТЕСТ 2: hashByDivision()---------------\n";
+  std::cout << "Пусть размер таблицы - простое число 23.\n";
+  std::cout << "Слово \"тест\": " << hashByDivision("тест", 23) << "\n";
+  std::cout << "Слово \"программист\": " << hashByDivision("программист", 23) << "\n";
+  std::cout << "Слово \"дедлайн\": " << hashByDivision("дедлайн", 23) << "\n";
+  std::cout << "Слово \"студент\": " << hashByDivision("студент", 23) << "\n";
+  std::cout << "Слово \"преподаватель\": " << hashByDivision("преподаватель", 23) << "\n";
+  std::cout << "Слово \"язык\": " << hashByDivision("язык", 23) << "\n";
+
+  std::cout << "Еще раз (чтобы проверить неизменность хешей).\n";
+  std::cout << "Слово \"тест\": " << hashByDivision("тест", 23) << "\n";
+  std::cout << "Слово \"программист\": " << hashByDivision("программист", 23) << "\n";
+  std::cout << "Слово \"дедлайн\": " << hashByDivision("дедлайн", 23) << "\n";
+  std::cout << "Слово \"студент\": " << hashByDivision("студент", 23) << "\n";
+  std::cout << "Слово \"преподаватель\": " << hashByDivision("преподаватель", 23) << "\n";
+  std::cout << "Слово \"язык\": " << hashByDivision("язык", 23) << "\n";
+
+  std::cout << "А теперь пусть размер таблицы - простое число 137.\n";
+  std::cout << "Слово \"тест\": " << hashByDivision("тест", 137) << "\n";
+  std::cout << "Слово \"программист\": " << hashByDivision("программист", 137) << "\n";
+  std::cout << "Слово \"дедлайн\": " << hashByDivision("дедлайн", 137) << "\n";
+  std::cout << "Слово \"студент\": " << hashByDivision("студент", 137) << "\n";
+  std::cout << "Слово \"преподаватель\": " << hashByDivision("преподаватель", 137) << "\n";
+  std::cout << "Слово \"язык\": " << hashByDivision("язык", 137) << "\n";
+
+  std::cout << "Еще раз (чтобы проверить неизменность хешей).\n";
+  std::cout << "Слово \"тест\": " << hashByDivision("тест", 137) << "\n";
+  std::cout << "Слово \"программист\": " << hashByDivision("программист", 137) << "\n";
+  std::cout << "Слово \"дедлайн\": " << hashByDivision("дедлайн", 137) << "\n";
+  std::cout << "Слово \"студент\": " << hashByDivision("студент", 137) << "\n";
+  std::cout << "Слово \"преподаватель\": " << hashByDivision("преподаватель", 137) << "\n";
+  std::cout << "Слово \"язык\": " << hashByDivision("язык", 137) << "\n";
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "----------------ТЕСТ 3: isRussianLetter()--------------\n";
+  std::cout << "Пройдемся по всем русским буквам.\n";
+  for (size_t i = 0; i < russianLetters.size(); i++)
+  {
+    std::cout << russianLetters[i] << ": " << std::setw(4) << (isRussianLetter(russianLetters[i]) ? "Да" : "Нет") << ", ";
+    if ((i != 0) && (i % 7 == 0))
+    {
+      std::cout << "\n";
+    }
+  }
+  std::cout << "\n";
+  std::cout << "Q" << ": " << std::setw(4) << (isRussianLetter('Q') ? "Да" : "Нет") << "\n";
+  std::cout << "r" << ": " << std::setw(4) << (isRussianLetter('r') ? "Да" : "Нет") << "\n";
+  std::cout << "!" << ": " << std::setw(4) << (isRussianLetter('!') ? "Да" : "Нет") << "\n";
+  std::cout << " " << ": " << std::setw(4) << (isRussianLetter(' ') ? "Да" : "Нет") << "\n";
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "----------------ТЕСТ 4: isEnglishLetter()--------------\n";
+  std::cout << "Пройдемся по всем английским буквам.\n";
+  for (size_t i = 0; i < englishLetters.size(); i++)
+  {
+    std::cout << englishLetters[i] << ": " << std::setw(4) << (isEnglishLetter(englishLetters[i]) ? "Да" : "Нет") << ", ";
+    if ((i != 0) && (i % 7 == 0))
+    {
+      std::cout << "\n";
+    }
+  }
+  std::cout << "\n";
+  std::cout << ";" << ": " << std::setw(4) << (isEnglishLetter(';') ? "Да" : "Нет") << "\n";
+  std::cout << "-" << ": " << std::setw(4) << (isEnglishLetter('-') ? "Да" : "Нет") << "\n";
+  std::cout << "!" << ": " << std::setw(4) << (isEnglishLetter('!') ? "Да" : "Нет") << "\n";
+  std::cout << " " << ": " << std::setw(4) << (isEnglishLetter(' ') ? "Да" : "Нет") << "\n";
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "----------------ТЕСТ 5: clearWord()--------------------\n";
+  std::string word = "Hello,";
+  std::cout << "\"" << word << "\": ";
+  clearWord(word);
+  std::cout << "\"" << word << "\"\n";
+
+  word = "@#@q&^w&^&*e&^&*r^%&t^&%&^y#@#";
+  std::cout << "\"" << word << "\": ";
+  clearWord(word);
+  std::cout << "\"" << word << "\"\n";
+
+  word = "O0neMo0reTest";
+  std::cout << "\"" << word << "\": ";
+  clearWord(word);
+  std::cout << "\"" << word << "\"\n";
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "----------------ТЕСТ 6: isWord()-----------------------\n";
+  std::cout << "Сначала пройдемся по случайным русским словам.\n";
+  std::ifstream finRussianWords("russianWords.txt"); // Берём их из файла, потому что должна быть другая кодировка (в IDE UTF-8).
+  while (!finRussianWords.eof())
+  {
+    finRussianWords >> word;
+    std::cout << "\"" << word << "\": " << (isWord(word) ? "Да\n" : "Нет\n");
+  }
+  finRussianWords.close();
+
+  std::cout << "Теперь по английским.\n";
+  std::cout << "\"" << "dog" << "\": " << (isWord("dog") ? "Да\n" : "Нет\n");
+  std::cout << "\"" << "function" << "\": " << (isWord("function") ? "Да\n" : "Нет\n");
+  std::cout << "\"" << "quality" << "\": " << (isWord("quality") ? "Да\n" : "Нет\n");
+  std::cout << "\"" << "Member" << "\": " << (isWord("Member") ? "Да\n" : "Нет\n");
+  std::cout << "\"" << "WeATHeR" << "\": " << (isWord("WeATHeR") ? "Да\n" : "Нет\n");
+
+  std::cout << "Теперь по НЕ словам.\n";
+  std::cout << "\"" << "do!g" << "\": " << (isWord("do!g") ? "Да\n" : "Нет\n");
+  std::cout << "\"" << "@function" << "\": " << (isWord("@function") ? "Да\n" : "Нет\n");
+  std::cout << "\"" << "quality#" << "\": " << (isWord("quality#") ? "Да\n" : "Нет\n");
+  std::cout << "\"" << "$@$@$@" << "\": " << (isWord("$@$@$@") ? "Да\n" : "Нет\n");
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "----------------ТЕСТ 7: toLower()----------------------\n";
+  std::cout << "Сначала пройдемся по русским словам.\n";
+  finRussianWords.open("russianWords.txt");
+  while(!finRussianWords.eof())
+  {
+    finRussianWords >> word;
+    std::cout << "\"" << word << "\": ";
+    toLower(word);
+    std::cout << "\"" << word << "\"\n";
+  }
+  finRussianWords.close();
+
+  std::cout << "Теперь по английским.\n";
+  word = "DOG";
+  std::cout << "\"" << word << "\": ";
+  toLower(word);
+  std::cout << "\"" << word << "\"\n";
+
+  word = "fUnCtIoN";
+  std::cout << "\"" << word << "\": ";
+  toLower(word);
+  std::cout << "\"" << word << "\"\n";
+
+  word = "QuAlItY";
+  std::cout << "\"" << word << "\": ";
+  toLower(word);
+  std::cout << "\"" << word << "\"\n";
+
+  std::cout <<"Теперь проверим возникновение исключеня, если передать функции не слово.\n";
+  word = "Hel!@@#!lo";
+  std::cout << "\"" << word << "\": ";
+  try
+  {
+    toLower(word);
+    std::cout << "\"" << word << "\"\n";
+  }
+  catch (const std::exception& error)
+  {
+    std::cout << error.what() << "\n";
+  }
+
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "----------------ТЕСТ 8: quickSort() и printVector()----\n";
+  std::vector< std::pair< std::string, size_t > > vec;
+  std::cout << "Пустой вектор до сортировки:\n";
+  printVector(vec, std::cout);
+  quickSort(vec, 0, vec.size() - 1);
+  std::cout << "Пустой вектор после сортировки:\n";
+  printVector(vec, std::cout);
+
+  vec.push_back(std::make_pair("тест", 1));
+  std::cout << "Вектор с одним элементом до сортировки:\n";
+  printVector(vec, std::cout);
+  quickSort(vec, 0, vec.size() - 1);
+  std::cout << "Вектор с одним элементом после сортировки:\n";
+  printVector(vec, std::cout);
+
+  vec.push_back(std::make_pair("программист", 42));
+  std::cout << "Вектор с двумя элементами до сортировки:\n";
+  printVector(vec, std::cout);
+  quickSort(vec, 0, vec.size() - 1);
+  std::cout << "Вектор с двумя элементами после сортировки:\n";
+  printVector(vec, std::cout);
+
+  vec.push_back(std::make_pair("дедлайн", 422));
+  std::cout << "Вектор с тремя элементами до сортировки:\n";
+  printVector(vec, std::cout);
+  quickSort(vec, 0, vec.size() - 1);
+  std::cout << "Вектор с тремя элементами после сортировки:\n";
+  printVector(vec, std::cout);
+
+  vec.clear();
+  vec.push_back(std::make_pair("тест", 422));
+  vec.push_back(std::make_pair("cтудент", 300));
+  vec.push_back(std::make_pair("программист", 150));
+  vec.push_back(std::make_pair("преподаватель", 43));
+  vec.push_back(std::make_pair("язык", 2));
+  std::cout << "Лучший случай до сортировки:\n";
+  printVector(vec, std::cout);
+  quickSort(vec, 0, vec.size() - 1);
+  std::cout << "Лучший случай после сортировки:\n";
+  printVector(vec, std::cout);
+
+  vec.clear();
+  vec.push_back(std::make_pair("тест", 2));
+  vec.push_back(std::make_pair("cтудент", 42));
+  vec.push_back(std::make_pair("программист", 34));
+  vec.push_back(std::make_pair("преподаватель", 150));
+  vec.push_back(std::make_pair("язык", 1));
+  std::cout << "Средний случай до сортировки:\n";
+  printVector(vec, std::cout);
+  quickSort(vec, 0, vec.size() - 1);
+  std::cout << "Средний случай после сортировки:\n";
+  printVector(vec, std::cout);
+
+  vec.clear();
+  vec.push_back(std::make_pair("тест", 1));
+  vec.push_back(std::make_pair("cтудент", 23));
+  vec.push_back(std::make_pair("программист", 242));
+  vec.push_back(std::make_pair("преподаватель", 1234));
+  vec.push_back(std::make_pair("язык", 4444));
+  std::cout << "Худший случай до сортировки:\n";
+  printVector(vec, std::cout);
+  quickSort(vec, 0, vec.size() - 1);
+  std::cout << "Худший случай после сортировки:\n";
+  printVector(vec, std::cout);
+  std::cout << "-------------------------------------------------------\n";
+  std::cout << "------------------------------------------------------------------------------------------------------\n";
 }

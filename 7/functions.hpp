@@ -9,9 +9,9 @@ class FrequencyDictionary;
 size_t getCharCode(char ch); // Получение кода символа (код русских букв может получаться как код - 256).
 size_t hashByDivision(const std::string& str, size_t size); // Хеш-функция методом деления.
 
-void clearWord(std::string& str); // Очистить слово от не букв.
 bool isRussianLetter(char ch); // true - если символ - английская буква.
 bool isEnglishLetter(char ch); // true - если символ - русская буква.
+void clearWord(std::string& str); // Очистить слово от не букв.
 bool isWord(const std::string& str); // true - если строка - подходящее слово.
 void toLower(std::string& str); // Переводит слово в нижний регистр.
 
@@ -28,6 +28,7 @@ void doPrintThreeMost(const FrequencyDictionary& dictionary); // Напечат�
 void doWriteFile(const FrequencyDictionary& dictionary); // Записать в файл слова по убыванию их встречаемости.
 
 void testProgram(); // Функция выполнения тестов.
-void doDoubleLinkedListTest();
+void doDoubleLinkedListTest(); // Тестирование двусвязного списка.
+void doFunctionsTest(); // Тестирование вспомогательных функций.
 
 #endif
