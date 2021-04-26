@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
 #include <vector>
 
 // Дважды связный список пар ключ(слово) - значение(частота встречаемости слова).
@@ -13,14 +14,14 @@ public:
 
   virtual ~DoubleLinkedList(); // Деструктор списка.
 
-  size_t count() const; // Количество элементов списка.
   bool insertItem(const std::string& key); // Добавление узла с заданным ключом (или увеличение счетчика частотности).
-  size_t searchItem(const std::string& key); // Поиска частоты вхождения слова key.
+  size_t searchItem(const std::string& key) const; // Поиска частоты вхождения слова key.
   bool deleteItem(const std::string& key); // Удаление узла с заданным ключом.
-  void clear();  // Очищение списка
-  void print(std::ostream& out); // Вывести содержимое списка в out.
-  void fillVector(std::vector< std::pair< std::string, size_t > >& vec); // Добавить к поступаемому на вход вектору пары из списка.
-  void fillThreeMost(std::vector< std::pair< std::string, size_t > >& vec); // Заполнить вектор трех чаще всего встречающихся слов.
+  void clear();  // Очищение списка.
+  size_t count() const; // Получить количество элементов списка.
+  void print(std::ostream& out) const; // Вывести содержимое списка в out.
+  void fillVector(std::vector< std::pair< std::string, size_t > >& vec) const; // Добавить к поступаемому на вход вектору пары из списка.
+  void fillThreeMost(std::vector< std::pair< std::string, size_t > >& vec) const; // Заполнить вектор трех чаще всего встречающихся слов.
 
 private:
   // Тип Node используется для описания элемента цепочки, связанного со
@@ -34,7 +35,7 @@ private:
 
     // Конструктор для создания нового элемента списка.
     Node(std::string key, size_t value, Node* next = nullptr, Node* prev = nullptr):
-      key_(key),
+      key_(std::move(key)),
       value_(value),
       next_(next),
       prev_(prev)
@@ -46,7 +47,7 @@ private:
   Node* tail_;        // Указатель на последний элемент списка.
 
   void insertNode(Node* x); // Вставить сформированный узел в список.
-  Node* searchNode(const std::string& key); // Поиск узла (адрес) с заданным значением ключа.
+  Node* searchNode(const std::string& key) const; // Поиск узла (адрес) с заданным значением ключа.
   void deleteNode(Node* x); // Удаление заданного узла.
 };
 

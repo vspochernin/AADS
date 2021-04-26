@@ -29,7 +29,7 @@ bool DoubleLinkedList::insertItem(const std::string& key)
   return true; // Добавление было.
 }
 
-size_t DoubleLinkedList::searchItem(const std::string& key)
+size_t DoubleLinkedList::searchItem(const std::string& key) const
 {
   Node* result = searchNode(key);
   if (result == nullptr)
@@ -44,7 +44,6 @@ size_t DoubleLinkedList::searchItem(const std::string& key)
 
 bool DoubleLinkedList::deleteItem(const std::string& key)
 {
-  bool check = false; // Удалился ли элемент?
   Node* current = head_;
   while (current != nullptr)
   {
@@ -55,7 +54,7 @@ bool DoubleLinkedList::deleteItem(const std::string& key)
     }
     current = current->next_;
   }
-  return check;
+  return false;
 }
 
 void DoubleLinkedList::clear()
@@ -73,7 +72,7 @@ void DoubleLinkedList::clear()
   tail_ = nullptr;
 }
 
-void DoubleLinkedList::print(std::ostream& out)
+void DoubleLinkedList::print(std::ostream& out) const
 {
   Node* current = head_;
   while (current != nullptr)
@@ -83,10 +82,10 @@ void DoubleLinkedList::print(std::ostream& out)
   }
 }
 
-void DoubleLinkedList::fillVector(std::vector < std::pair< std::string, size_t > > &vec)
+void DoubleLinkedList::fillVector(std::vector < std::pair< std::string, size_t > > &vec) const
 {
   Node* current = head_;
-  while (current != nullptr)
+  while (current != nullptr) // Просто записываем все пары ключ - значение в вектор.
   {
     std::pair< std::string, size_t > pair;
     pair.first = current->key_;
@@ -96,24 +95,24 @@ void DoubleLinkedList::fillVector(std::vector < std::pair< std::string, size_t >
   }
 }
 
-void DoubleLinkedList::fillThreeMost(std::vector< std::pair< std::string, size_t > >& vec)
+void DoubleLinkedList::fillThreeMost(std::vector< std::pair< std::string, size_t > >& vec) const
 {
-  if (vec.size() != 3)
+  if (vec.size() != 3) // Вектор должен быть размером 3.
   {
     throw (std::invalid_argument("Некорректный размер подаваемого вектора!"));
   }
 
   Node* current = head_;
-  while (current != nullptr)
+  while (current != nullptr) // Каждую пару ключ - значение ставим на свое место в векторе (если она должна там быть).
   {
     std::pair< std::string, size_t > pair;
     pair.first = current->key_;
     pair.second = current->value_;
-    if (pair.second > vec[0].second)
+    if (pair.second > vec[0].second) // Если пара должна оказаться на первом месте...
     {
-      vec[2] = vec[1];
+      vec[2] = vec[1]; // ...смещаем уже стоявшие элементы.
       vec[1] = vec[0];
-      vec[0] = pair;
+      vec[0] = pair; // И ставим пару на первое место.
     }
     else if (pair.second > vec[1].second)
     {
@@ -151,7 +150,7 @@ void DoubleLinkedList::insertNode(Node* x)
   count_++; // Число элементов списка увеличилось.
 }
 
-DoubleLinkedList::Node* DoubleLinkedList::searchNode(const std::string& key)
+DoubleLinkedList::Node* DoubleLinkedList::searchNode(const std::string& key) const
 {
   Node* current = head_;
   while ((current != nullptr) && (current->key_ != key)) // Пока не прошли весь список или не нашли нужный узел...

@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "frequency-dictionary.hpp"
+
 size_t getCharCode(char ch)
 {
   int temp = static_cast< int >(ch);
@@ -179,6 +181,14 @@ void quickSort(std::vector< std::pair< std::string, size_t > >& vec, int l, int 
   }
 }
 
+void printVector(const std::vector< std::pair< std::string, size_t > >& vec, std::ostream& out)
+{
+  for (size_t i = 0; i < vec.size(); i++)
+  {
+    out << vec[i].first << ": " << vec[i].second << "\n";
+  }
+}
+
 void startProgram()
 {
   FrequencyDictionary dictionary;
@@ -343,4 +353,112 @@ void doWriteFile(const FrequencyDictionary& dictionary)
 
 void testProgram()
 {
+  doDoubleLinkedListTest();
+}
+
+void doDoubleLinkedListTest()
+{
+  std::cout << "---------------------------------ТЕСТИРОВАНИЕ ДВУСВЯЗНОГО СПИСКА---------------------------------\n";
+  std::cout << "-----------------ТЕСТ 1: ПУСТОЙ СПИСОК-----------------\n";
+  DoubleLinkedList list;
+  std::cout << "Количество элементов: " << list.count() << "\n";
+  std::cout << "Сам список: \n";
+  list.print(std::cout);
+
+  std::cout << "Слово \"тест\" встречается в списке " << list.searchItem("тест") << " раз.\n";
+
+  std::cout << "Удаление слова \"тест\": " << (list.deleteItem("тест") ? "произошло." : "не произошло.") << "\n";
+  std::cout << "Количество элементов: " << list.count() << "\n";
+  std::cout << "Сам список: \n";
+
+  list.print(std::cout);
+  std::vector< std::pair< std::string, size_t > > vec;
+  list.fillVector(vec);
+  std::cout << "Вектор, заполненный пустым списокм:\n";
+  printVector(vec, std::cout);
+
+  std::vector< std::pair< std::string, size_t > > vec3;
+  std::pair< std::string, size_t > emptyPair;
+  emptyPair.first = "";
+  emptyPair.second = 0;
+  for (size_t i = 0; i < 3; i++)
+  {
+    vec3.push_back(emptyPair);
+  }
+  list.fillThreeMost(vec3);
+  std::cout << "Вектор трех чаще всего встречающихся слов, заполненный пустым списокм:\n";
+  printVector(vec3, std::cout);
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "-----------------ТЕСТ 2: ДОБАВЛЕНИЕ ЭЛЕМЕНТОВ И ПОИСК--\n";
+  list.insertItem("тест");
+  list.insertItem("тест");
+  list.insertItem("тест");
+  list.insertItem("тест");
+  list.insertItem("тест");
+  list.insertItem("программирование");
+  list.insertItem("программирование");
+  list.insertItem("студент");
+  list.insertItem("студент");
+  list.insertItem("студент");
+  list.insertItem("преподаватель");
+  std::cout << "Количество элементов: " << list.count() << "\n";
+  std::cout << "Сам список: \n";
+  list.print(std::cout);
+
+  std::cout << "Слово \"тест\" встречается в списке " << list.searchItem("тест") << " раз.\n";
+  std::cout << "Слово \"дедлайн\" встречается в списке " << list.searchItem("дедлайн") << " раз.\n";
+
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "-----------------ТЕСТ 3: УДАЛЕНИЕ ЭЛЕМЕНТОВ------------\n";
+  std::cout << "Список до удаления элементов:\n";
+  std::cout << "Количество элементов: " << list.count() << "\n";
+  list.print(std::cout);
+
+  std::cout << "Удаление слова \"тест\": " << (list.deleteItem("тест") ? "произошло." : "не произошло.") << "\n";
+  std::cout << "Удаление слова \"дедлайн\": " << (list.deleteItem("дедлайн") ? "произошло." : "не произошло.") << "\n";
+  std::cout << "Удаление слова \"студент\": " << (list.deleteItem("студент") ? "произошло." : "не произошло.") << "\n";
+  std::cout << "Удаление слова \"тест\": " << (list.deleteItem("тест") ? "произошло." : "не произошло.") << "\n";
+
+  std::cout << "Список после удаления элементов:\n";
+  std::cout << "Количество элементов: " << list.count() << "\n";
+  list.print(std::cout);
+  std::cout << "-------------------------------------------------------\n";
+
+  std::cout << "----------------ТЕСТ 3: ЗАПОЛНЕНИЕ ВЕКТОРОВ------------\n";
+  list.insertItem("тест");
+  list.insertItem("тест");
+  list.insertItem("тест");
+  list.insertItem("тест");
+  list.insertItem("тест");
+  list.insertItem("язык");
+  list.insertItem("язык");
+  list.insertItem("язык");
+  list.insertItem("язык");
+  list.insertItem("язык");
+  list.insertItem("право");
+  std::cout << "Сам список: \n";
+  std::cout << "Количество элементов: " << list.count() << "\n";
+  list.print(std::cout);
+
+  list.fillVector(vec);
+  std::cout << "Вектор, заполненный пустым списокм:\n";
+  printVector(vec, std::cout);
+
+  list.fillThreeMost(vec3);
+  std::cout << "Вектор трех чаще всего встречающихся слов, заполненный пустым списокм:\n";
+  printVector(vec3, std::cout);
+  std::cout << "-------------------------------------------------------\n";
+  std::cout << "----------------ТЕСТ 4: ОЧИСТКА СПИСКА-----------------\n";
+  std::cout << "Список до очкстки: \n";
+  std::cout << "Количество элементов: " << list.count() << "\n";
+  list.print(std::cout);
+
+  list.clear();
+  std::cout << "Список после очкстки: \n";
+  std::cout << "Количество элементов: " << list.count() << "\n";
+  list.print(std::cout);
+  std::cout << "-------------------------------------------------------\n";
+  std::cout << "-------------------------------------------------------------------------------------------------\n";
 }
