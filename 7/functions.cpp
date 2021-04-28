@@ -1,10 +1,10 @@
 #include "functions.hpp"
 
-#include <cassert>
-#include <ctime>
+#include <cassert> // Для assert.
+#include <ctime> // Для рандомизации.
 #include <iostream>
 #include <fstream>
-#include <iomanip>
+#include <iomanip> // Для красивого вывода.
 
 #include "frequency-dictionary.hpp"
 
@@ -17,7 +17,7 @@ size_t getCharCode(char ch)
   }
   else
   {
-    assert(temp > -256); // Если код <= -256 - значит что-то не так.
+    assert(temp > -256); // Если код <= -256 - значит что-то не так. Так не должно быть впринципе.
     return static_cast<size_t >(256 + temp);
   }
 }
@@ -36,7 +36,7 @@ size_t hashByDivision(const std::string& str, size_t size)
 
 void clearWord(std::string& str)
 {
-  std::string::iterator i = str.begin(); // Итератор на начала слова.
+  std::string::iterator i = str.begin(); // Итератор на начало слова.
   while (i != str.end()) // Пока мы не дошли до конца слова...
   {
     if (!(isRussianLetter(*i) || isEnglishLetter(*i))) // Если очередной символ - не буква...
