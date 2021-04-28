@@ -50,11 +50,11 @@ bool DoubleLinkedList::deleteItem(const std::string& key)
     if (current->key_ == key)
     {
       deleteNode(current);
-      return true;
+      return true; // Удаление было.
     }
     current = current->next_;
   }
-  return false;
+  return false; // Удаления не было (так как элемент с таким ключом отсутствовал в списке).
 }
 
 void DoubleLinkedList::clear()
@@ -77,8 +77,8 @@ void DoubleLinkedList::print(std::ostream& out) const
   Node* current = head_;
   while (current != nullptr)
   {
-    out << current->key_ <<": " << current->value_ << "\n";
-    current = current->next_;
+    out << current->key_ <<": " << current->value_ << "\n"; // Выводим элемент.
+    current = current->next_; // Переходим к следующему.
   }
 }
 
@@ -135,6 +135,7 @@ size_t DoubleLinkedList::count() const
 void DoubleLinkedList::insertNode(Node* x)
 {
   // Так как на этом этапе мы уверены, что элемента с таким ключем в списке нет - просто добавим в начало списка.
+  // Мы уверены в этом, потому что метод вызывается из insertItem() после проверки всего списка.
   x->next_ = head_;
   if (head_ != nullptr)
   {

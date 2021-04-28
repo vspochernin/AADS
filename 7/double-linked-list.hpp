@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <utility>
 #include <vector>
 
 // Дважды связный список пар ключ(слово) - значение(частота встречаемости слова).
