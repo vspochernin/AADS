@@ -99,6 +99,7 @@ void FrequencyDictionary::readFile(const std::string& fileName)
     catch (const std::invalid_argument& error)
     {}
   }
+  fin.close();
 }
 
 void FrequencyDictionary::printUnsorted(std::ostream& out) const
@@ -174,5 +175,18 @@ size_t FrequencyDictionary::size()
 size_t FrequencyDictionary::count()
 {
   return count_;
+}
+
+size_t FrequencyDictionary::collisions()
+{
+  size_t result = 0;
+  for (size_t i = 0; i < size_; i++)
+  {
+    if (data_[i].count() > 1)
+    {
+      result++;
+    }
+  }
+  return result;
 }
 

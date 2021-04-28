@@ -822,6 +822,8 @@ void doFrequencyDictionaryTest()
 
   std::cout << "Словарь в отсортированном виде после удаления:\n";
   dictionary.printSorted(std::cout);
+  std::cout << "Размер словаря после удаления: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре после удаления: " << dictionary.count() << "\n";
   std::cout << "Удаление слова \"student\": " << (dictionary.deleteWord("student") ? "произошло." : "не произошло.") << "\n";
   std::cout << "Удаление слова \"teacher\": " << (dictionary.deleteWord("teacher") ? "произошло." : "не произошло.") << "\n";
   std::cout << "Словарь в отсортированном виде после удаления:\n";
@@ -863,6 +865,29 @@ void doFrequencyDictionaryTest()
   dictionary.clear();
   std::cout << "Размер словаря после очищения: " << dictionary.size() << "\n";
   std::cout << "Количество элементов в словаре после очищения: " << dictionary.count() << "\n";
+  std::cout << "-------------------------------------------------------\n";
+  std::cout << "------------ТЕСТ 7: КОЛЛИЗИИ---------------------------\n";
+  std::cout << "Проверим возникновение коллизий в словаре\n";
+  std::cout << "Изначально имеем пустой словарь.\n";
+  std::cout << "Размер словаря: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре: " << dictionary.count() << "\n";
+  std::cout << "Количество коллизий в словаре: " << dictionary.collisions() << "\n";
+  std::cout << "Добавим в словарь 1 элемент.\n";
+  dictionary.insertWord("test");
+  std::cout << "Размер словаря: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре: " << dictionary.count() << "\n";
+  std::cout << "Количество коллизий в словаре: " << dictionary.collisions() << "\n";
+  std::cout << "Прочитаем в словарь наш файл\n";
+  dictionary.readFile("sampleInput.txt");
+  std::cout << "Размер словаря: " << dictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре: " << dictionary.count() << "\n";
+  std::cout << "Количество коллизий в словаре: " << dictionary.collisions() << "\n";
+  std::cout << "Создадим словарь размера 46933 и прочитаем в него наш файл\n";
+  FrequencyDictionary bigDictionary(46933);
+  bigDictionary.readFile("sampleInput.txt");
+  std::cout << "Размер словаря: " << bigDictionary.size() << "\n";
+  std::cout << "Количество элементов в словаре: " << bigDictionary.count() << "\n";
+  std::cout << "Количество коллизий в словаре: " << bigDictionary.collisions() << "\n";
   std::cout << "-------------------------------------------------------\n";
   std::cout << "------------------------------------------------------------------------------------------------------\n";
 }
