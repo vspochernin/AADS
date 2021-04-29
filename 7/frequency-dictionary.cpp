@@ -1,7 +1,6 @@
 #include "frequency-dictionary.hpp"
 
 #include <fstream>
-#include <exception>
 
 const size_t DEFAULT_SIZE = 1511; // Рандомное простое число.
 
@@ -42,7 +41,7 @@ void FrequencyDictionary::insertWord(const std::string& str)
   }
   else
   {
-    throw (std::invalid_argument("Некооректное слово при добавлении!"));
+    throw (std::invalid_argument("Некооректное слово!"));
   }
 }
 
@@ -56,7 +55,7 @@ size_t FrequencyDictionary::searchWord(const std::string& str) const
   }
   else
   {
-    throw(std::invalid_argument("Некорректное слово при поиске!"));
+    throw(std::invalid_argument("Некорректное слово!"));
   }
 }
 
@@ -74,7 +73,7 @@ bool FrequencyDictionary::deleteWord(const std::string& str)
   }
   else
   {
-    throw(std::invalid_argument("Некорректное слово при удалении!"));
+    throw(std::invalid_argument("Некорректное слово!"));
   }
   return false;
 }
@@ -96,7 +95,7 @@ void FrequencyDictionary::readFile(const std::string& fileName)
     {
       insertWord(str);
     }
-    catch (const std::invalid_argument& error)
+    catch (const std::invalid_argument& error) // Пропускаем ошибки о некорректных словах (пропускаем эти слова).
     {}
   }
   fin.close();
@@ -124,10 +123,7 @@ void FrequencyDictionary::printSorted(std::ostream &out) const
   std::vector< std::pair< std::string, size_t > > vec;
   fillVector(vec);
   quickSort(vec, 0, vec.size() - 1);
-  for (size_t i = 0; i < vec.size(); i++)
-  {
-    out << vec[i].first << ": " << vec[i].second << "\n";
-  }
+  printVector(vec, out);
 }
 
 std::vector< std::pair< std::string, size_t > > FrequencyDictionary::getThreeMost() const
@@ -136,12 +132,12 @@ std::vector< std::pair< std::string, size_t > > FrequencyDictionary::getThreeMos
   std::pair< std::string, size_t > emptyPair;
   emptyPair.first = "";
   emptyPair.second = 0;
-  for (size_t i = 0; i < 3; i++)
+  for (size_t i = 0; i < 3; i++) // Заполняем созданный вектор тремя пустыми парами.
   {
     vec.push_back(emptyPair);
   }
 
-  for (size_t i = 0; i < size_; i++)
+  for (size_t i = 0; i < size_; i++) // Заполняем вектор трех чаще всего встречающихся слов.
   {
     data_[i].fillThreeMost(vec);
   }
@@ -152,10 +148,7 @@ std::vector< std::pair< std::string, size_t > > FrequencyDictionary::getThreeMos
 void FrequencyDictionary::printThreeMost(std::ostream& out) const
 {
   std::vector< std::pair< std::string, size_t > > vec = getThreeMost();
-  for (size_t i = 0; i < vec.size(); i++)
-  {
-    out << vec[i].first << ": " << vec[i].second << "\n";
-  }
+  printVector(vec, out);
 }
 
 void FrequencyDictionary::clear()
@@ -164,7 +157,7 @@ void FrequencyDictionary::clear()
   {
     data_[i].clear(); // Очищаем каждый двусвязный список хеш-таблицы.
   }
-  count_ = 0;
+  count_ = 0; // Не забываем обнулить количество слов в словаре.
 }
 
 size_t FrequencyDictionary::size()
@@ -182,11 +175,10 @@ size_t FrequencyDictionary::collisions()
   size_t result = 0;
   for (size_t i = 0; i < size_; i++)
   {
-    if (data_[i].count() > 1)
+    if (data_[i].count() > 1) // Если в двусвязном списке больше 1 слова - это коллизия.
     {
       result++;
     }
   }
   return result;
 }
-

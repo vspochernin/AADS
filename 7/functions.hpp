@@ -24,6 +24,7 @@ void doInsert(FrequencyDictionary& dictionary); // Добавить слово.
 void doSearch(const FrequencyDictionary& dictionary); // Найти слово.
 void doDelete(FrequencyDictionary& dictionary); // Удалить слово.
 void doReadFile(FrequencyDictionary& dictionary); // Добавить слова из файла.
+void doPrint(FrequencyDictionary& dictionary); // Вывести словарь в консоль.
 void doPrintThreeMost(const FrequencyDictionary& dictionary); // Напечатать три чаще всего встречающихся слова.
 void doWriteFile(const FrequencyDictionary& dictionary); // Записать в файл слова по убыванию их встречаемости.
 void doClear(FrequencyDictionary& dictionary); // Очистить словарь.

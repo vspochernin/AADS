@@ -11,11 +11,11 @@
 class FrequencyDictionary
 {
 public:
-  FrequencyDictionary();
+  FrequencyDictionary(); // Конструктор "по умолчанию" - создание словаря с размером "по умолчанию".
 
-  explicit FrequencyDictionary(size_t size);
+  explicit FrequencyDictionary(size_t size); // Консутрктор словаря с конкретным размером.
 
-  ~FrequencyDictionary();
+  ~FrequencyDictionary(); // Деструктор словаря.
 
   void insertWord(const std::string& str); // Добавление слова или увеличение счетчика его частотности.
   size_t searchWord(const std::string& str) const; // Поиск слова (получаем значение - его частотность).
