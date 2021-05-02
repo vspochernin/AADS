@@ -208,6 +208,14 @@ void startProgram()
             << "Началось выполнение программы\n"
             << "\"help\" - посмотреть полный список команд\n"
             << "\"exit\" - выйти из программы\n"
+            << "\"insert\" - добавить слово\n"
+            << "\"search\" - найти слово\n"
+            << "\"delete\" - удалить слово\n"
+            << "\"readFile\" - добавить все слова из файла\n"
+            << "\"print\" - вывести весь словарь\n"
+            << "\"printThreeMost\" - вывести три чаще всего встречающихся слова\n"
+            << "\"writeFile\" - записать в файл слова по убыванию их встречаемости\n"
+            << "\"clear\" - очистить словарь\n"
             << "------------------------------------------------------\n";
   std::string input = "";
   while (true)
@@ -907,8 +915,8 @@ void doFrequencyDictionaryTest()
   std::cout << "Размер словаря: " << dictionary.size() << "\n";
   std::cout << "Количество элементов в словаре: " << dictionary.count() << "\n";
   std::cout << "Количество коллизий в словаре: " << dictionary.collisions() << "\n";
-  std::cout << "Создадим словарь размера 46933 и прочитаем в него наш файл\n";
-  FrequencyDictionary bigDictionary(46933);
+  std::cout << "Создадим словарь размера 1000 и прочитаем в него наш файл\n";
+  FrequencyDictionary bigDictionary(1000);
   bigDictionary.readFile("sampleInput.txt");
   std::cout << "Размер словаря: " << bigDictionary.size() << "\n";
   std::cout << "Количество элементов в словаре: " << bigDictionary.count() << "\n";

@@ -13,11 +13,11 @@ public:
 
   virtual ~DoubleLinkedList(); // Деструктор списка.
 
-  bool insertItem(const std::string& key); // Добавление узла с заданным ключом (или увеличение счетчика частотности).
-  size_t searchItem(const std::string& key) const; // Поиска частоты вхождения слова key.
+  bool insertItem(const std::string& key); // Добавление узла с заданным ключом (или увеличение счетчика вхождений).
+  size_t searchItem(const std::string& key) const; // Поиск количества вхождений слова.
   bool deleteItem(const std::string& key); // Удаление узла с заданным ключом.
   void clear();  // Очищение списка.
-  size_t count() const; // Получить количество элементов списка.
+  size_t count() const; // Количество элементов списка.
   void print(std::ostream& out) const; // Вывести содержимое списка в out.
   void fillVector(std::vector< std::pair< std::string, size_t > >& vec) const; // Добавить к поступаемому на вход вектору пары из списка.
   void fillThreeMost(std::vector< std::pair< std::string, size_t > >& vec) const; // Заполнить вектор трех чаще всего встречающихся слов.
@@ -28,7 +28,7 @@ private:
   struct Node
   {
     std::string key_; // Ключ (слово).
-    size_t value_;    // Значение (частота встречаемости слова).
+    size_t value_;    // Значение (количество вхождений слова).
     Node* next_;      // Указатель на следующий элемент списка.
     Node* prev_;      // Указатель на предшествующий элемент списка.
 

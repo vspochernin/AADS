@@ -11,23 +11,23 @@ size_t hashByDivision(const std::string& str, size_t size); // Хеш-функц
 
 bool isRussianLetter(char ch); // true - если символ - русская буква.
 bool isEnglishLetter(char ch); // true - если символ - английская буква.
-void clearWord(std::string& str); // Очистить слово от не букв.
+void clearWord(std::string& str); // Очищение слова от не букв.
 bool isWord(const std::string& str); // true - если строка - подходящее нашему определению слово.
-void toLower(std::string& str); // Переводит слово в нижний регистр.
+void toLower(std::string& str); // Перевод слова в нижний регистр.
 
 void quickSort(std::vector< std::pair< std::string, size_t > >& vec, int l, int r); // Быстрая сортировка вектора пар.
-void printVector(const std::vector< std::pair< std::string, size_t > >& vec, std::ostream& out); // Вывести вектор пар в out.
+void printVector(const std::vector< std::pair< std::string, size_t > >& vec, std::ostream& out); // Вывод вектора пар в out.
 
 void startProgram(); // Функция выполнения основной программы.
-void showHelp(); // Вывести список команд.
-void doInsert(FrequencyDictionary& dictionary); // Добавить слово.
-void doSearch(const FrequencyDictionary& dictionary); // Найти слово.
-void doDelete(FrequencyDictionary& dictionary); // Удалить слово.
-void doReadFile(FrequencyDictionary& dictionary); // Добавить слова из файла.
-void doPrint(FrequencyDictionary& dictionary); // Вывести словарь в консоль.
-void doPrintThreeMost(const FrequencyDictionary& dictionary); // Напечатать три чаще всего встречающихся слова.
-void doWriteFile(const FrequencyDictionary& dictionary); // Записать в файл слова по убыванию их встречаемости.
-void doClear(FrequencyDictionary& dictionary); // Очистить словарь.
+void showHelp(); // Вывод списка команд.
+void doInsert(FrequencyDictionary& dictionary); // Добавление слова.
+void doSearch(const FrequencyDictionary& dictionary); // Поиск слова.
+void doDelete(FrequencyDictionary& dictionary); // Удаление слова.
+void doReadFile(FrequencyDictionary& dictionary); // Добавление слова из файла.
+void doPrint(FrequencyDictionary& dictionary); // Вывод словаря в консоль.
+void doPrintThreeMost(const FrequencyDictionary& dictionary); // Печать трех чаще всего встречающихся слов.
+void doWriteFile(const FrequencyDictionary& dictionary); // Запись в файл слов по убыванию их встречаемости.
+void doClear(FrequencyDictionary& dictionary); // Очищение словаря.
 
 void testProgram(); // Функция выполнения тестов.
 void doDoubleLinkedListTest(); // Тестирование двусвязного списка.

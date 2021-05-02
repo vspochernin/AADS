@@ -17,15 +17,15 @@ public:
 
   ~FrequencyDictionary(); // Деструктор словаря.
 
-  void insertWord(const std::string& str); // Добавление слова или увеличение счетчика его частотности.
-  size_t searchWord(const std::string& str) const; // Поиск слова (получаем значение - его частотность).
+  void insertWord(const std::string& str); // Добавление слова или увеличение счетчика его вхождений.
+  size_t searchWord(const std::string& str) const; // Поиск количества вхождений слова.
   bool deleteWord(const std::string& str); // Удаление слова.
-  void readFile(const std::string& fileName); // Прочитать слова из файла в хеш-таблицу.
-  void fillVector(std::vector< std::pair< std::string, size_t > >& vec) const; // Заполнить поступающий на вход вектор пар хеш-таблицей.
-  std::vector< std::pair < std::string, size_t > > getThreeMost() const; // Получить вектор пар трех чаще всего встречающихся слова.
-  void printUnsorted(std::ostream& out) const; // Напечатать хеш-таблицу в out (в неосортированном виде).
-  void printSorted(std::ostream& out) const; // Напечатать хеш-таблицу в out (в отсортированном виде).
-  void printThreeMost(std::ostream& out) const; // Напечатать три чаще всего встречающихся слова в out.
+  void readFile(const std::string& fileName); // Чтение слова из файла в хеш-таблицу.
+  void fillVector(std::vector< std::pair< std::string, size_t > >& vec) const; // Заполнение поступающего на вход вектора пар хеш-таблицей.
+  std::vector< std::pair < std::string, size_t > > getThreeMost() const; // Получение вектора пар трех чаще всего встречающихся слов.
+  void printUnsorted(std::ostream& out) const; // Печать хеш-таблицы в out (в неосортированном виде).
+  void printSorted(std::ostream& out) const; // Печать хеш-таблицы в out (в отсортированном виде).
+  void printThreeMost(std::ostream& out) const; // Печать трех чаще всего встречающихся слова в out.
   void clear(); // Очищение словаря.
   size_t size(); // Размер словаря.
   size_t count(); // Количество записей в словаре.

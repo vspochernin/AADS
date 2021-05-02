@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-const size_t DEFAULT_SIZE = 1511; // Рандомное простое число.
+const size_t DEFAULT_SIZE = 98299; // Рандомное простое число.
 
 FrequencyDictionary::FrequencyDictionary():
   size_(DEFAULT_SIZE),
